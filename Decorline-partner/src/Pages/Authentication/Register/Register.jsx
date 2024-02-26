@@ -116,7 +116,7 @@ const Register = () => {
                                                             type='text'
                                                             id='name'
                                                             name='name'
-                                                            className='outline-none w-[100%] sm:h-[30px]'
+                                                            className='outline-none border-none  w-[100%] sm:h-[30px]'
                                                             placeholder='Enter your name'
                                                             required
                                                         />
@@ -151,7 +151,7 @@ const Register = () => {
                                                                 type='text'
                                                                 id='BusinessName'
                                                                 name='BusinessName'
-                                                                className='outline-none w-[100%] sm:h-[30px]'
+                                                                className='outline-none border-none w-[100%] sm:h-[30px]'
                                                                 placeholder='Enter your business name (optional)'
                                                                 required
                                                             />
@@ -165,7 +165,7 @@ const Register = () => {
                                                                     type='text'
                                                                     id='AddressLine1'
                                                                     name='AddressLine1'
-                                                                    className='outline-none w-[100%] sm:h-[30px]'
+                                                                    className='outline-none border-none w-[100%] sm:h-[30px]'
                                                                     placeholder='Address Line 1'
                                                                     required
                                                                 />
@@ -175,7 +175,7 @@ const Register = () => {
                                                                     type='text'
                                                                     id='AddressLine2'
                                                                     name='AddressLine2 '
-                                                                    className='outline-none w-[100%] sm:h-[30px]'
+                                                                    className='outline-none border-none w-[100%] sm:h-[30px]'
                                                                     placeholder='Address Line 2'
                                                                     required
                                                                 />
@@ -185,7 +185,7 @@ const Register = () => {
                                                                     type='text'
                                                                     id='City'
                                                                     name='City'
-                                                                    className='outline-none w-[50%] h-[100%] border-[1px] rounded-[10px] pl-3'
+                                                                    className='outline-none  w-[50%] h-[100%] border-[1px] rounded-[10px] pl-3'
                                                                     placeholder='City'
                                                                     required
                                                                 />
@@ -203,7 +203,7 @@ const Register = () => {
                                                                     type='text'
                                                                     id='PinCode'
                                                                     name='PinCode'
-                                                                    className='outline-none w-[100%] sm:h-[30px]'
+                                                                    className='outline-none border-none w-[100%] sm:h-[30px]'
                                                                     placeholder='Pin Code'
                                                                     required
                                                                 />
@@ -273,7 +273,7 @@ const Register = () => {
                                                             <select
                                                                 id='document'
                                                                 name='document'
-                                                                className='outline-none w-[100%] sm:h-[30px]'
+                                                                className='outline-none w-[100%]  sm:h-[40px] text-[13px]'
                                                                 value={selectedDocument}
                                                                 onChange={handleDocumentChange}
                                                                 required
@@ -292,7 +292,7 @@ const Register = () => {
                                                                 type='text'
                                                                 id='documentNo'
                                                                 name='documentNo'
-                                                                className='outline-none w-[100%] sm:h-[30px]'
+                                                                className='outline-none border-none w-[100%] sm:h-[30px]'
                                                                 placeholder='Enter your document number'
                                                                 required
                                                             />

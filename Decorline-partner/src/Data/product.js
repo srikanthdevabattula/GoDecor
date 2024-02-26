@@ -13,15 +13,18 @@ export const Products=[
         stock:30,
         cost:3400,
         img:product1,
-        images:[pimg,pimg,pimg,pimg,pimg]
+        images:[pimg,pimg,pimg,pimg,pimg],
+        description:"Introducing our eco-conscious Vegan Leather Chair, a perfect blend of style, comfort, and sustainability. Crafted with high-quality, cruelty-free materials, this chair embodies luxurious comfort while being environmentally friendly. Designed with a sleek and modern aesthetic, our Vegan Leather Chair complements any space, whether it's your office, living room, or study. Its supple vegan leather upholstery provides the look and feel of genuine leather without compromising on ethics."
     },
     {
         id:2,
-        name:'Vegan Leather Chair',
+        name:'tata Leather Chair',
         stock:34,
         cost:3400,
         img:product2,
-        images:[pimg,pimg,pimg,pimg]
+        images:[pimg,pimg,pimg,pimg],
+        description:"Introducing our eco-conscious Vegan Leather Chair, a perfect blend of style, comfort, and sustainability. Crafted with high-quality, cruelty-free materials, this chair embodies luxurious comfort while being environmentally friendly. Designed with a sleek and modern aesthetic, our Vegan Leather Chair complements any space, whether it's your office, living room, or study. Its supple vegan leather upholstery provides the look and feel of genuine leather without compromising on ethics."
+    
     },
     {
         id:3,
@@ -29,7 +32,9 @@ export const Products=[
         stock:35,
         cost:3400,
         img:product3,
-        images:[pimg,pimg,pimg,pimg]
+        images:[pimg,pimg,pimg,pimg],
+        description:"Introducing our eco-conscious Vegan Leather Chair, a perfect blend of style, comfort, and sustainability. Crafted with high-quality, cruelty-free materials, this chair embodies luxurious comfort while being environmentally friendly. Designed with a sleek and modern aesthetic, our Vegan Leather Chair complements any space, whether it's your office, living room, or study. Its supple vegan leather upholstery provides the look and feel of genuine leather without compromising on ethics."
+    
     },
     {
         id:4,
@@ -37,23 +42,29 @@ export const Products=[
         stock:36,
         cost:3400,
         img:product4,
-        images:[pimg,pimg,pimg,pimg]
+        images:[pimg,pimg,pimg,pimg],
+        description:"Introducing our eco-conscious Vegan Leather Chair, a perfect blend of style, comfort, and sustainability. Crafted with high-quality, cruelty-free materials, this chair embodies luxurious comfort while being environmentally friendly. Designed with a sleek and modern aesthetic, our Vegan Leather Chair complements any space, whether it's your office, living room, or study. Its supple vegan leather upholstery provides the look and feel of genuine leather without compromising on ethics."
+    
     },
     {
         id:5,
-        name:'Vegan Leather Chair',
+        name:'Vegan tata Chair',
         stock:32,
         cost:3400,
         img:product5,
-        images:[pimg,pimg,pimg,pimg]
+        images:[pimg,pimg,pimg,pimg],
+        description:"Introducing our eco-conscious Vegan Leather Chair, a perfect blend of style, comfort, and sustainability. Crafted with high-quality, cruelty-free materials, this chair embodies luxurious comfort while being environmentally friendly. Designed with a sleek and modern aesthetic, our Vegan Leather Chair complements any space, whether it's your office, living room, or study. Its supple vegan leather upholstery provides the look and feel of genuine leather without compromising on ethics."
+    
     },
     {
         id:6,
-        name:'Vegan Leather Chair',
+        name:'Vegan ricoz Chair',
         stock:28,
         cost:3400,
         img:product6,
-        images:[pimg,pimg,pimg,pimg]
+        images:[pimg,pimg,pimg,pimg],
+        description:"Introducing our eco-conscious Vegan Leather Chair, a perfect blend of style, comfort, and sustainability. Crafted with high-quality, cruelty-free materials, this chair embodies luxurious comfort while being environmentally friendly. Designed with a sleek and modern aesthetic, our Vegan Leather Chair complements any space, whether it's your office, living room, or study. Its supple vegan leather upholstery provides the look and feel of genuine leather without compromising on ethics."
+    
     },
     
 

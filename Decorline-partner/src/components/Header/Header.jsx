@@ -16,7 +16,7 @@ const Header = () => {
 	const pages=useSelector(sidebarSelector)
 	
 	return (
-		<header className="w-[238px] lg:w-[200px] md:w-[170px] sm:w-[120px] h-[100vh] items-center justify-center bg-[#FFFFFF] border-[0.5px] border-[#ECECEC]" style={{boxShadow: '0px 4px 15px 0px #0000001C'
+		<header className="w-[238px] lg:w-[200px] md:w-[170px] sm:w-[120px] h-[100vh] items-center justify-center bg-[#FFFFFF] border-[0.5px] border-[#ECECEC] overflow-y-auto scrollbar-hide" style={{boxShadow: '0px 4px 15px 0px #0000001C'
 		}}>
 			<nav className="flex items-center justify-center space-x-2   flex-col">
 				<h1 className="font-poppins font-bold text-[20px] text-center my-6">Logo</h1>
