@@ -3,6 +3,8 @@ export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
 		extend: {
+		
+		  
 			filter: {
 				'hue-rotate-320': 'hue-rotate(320deg)',
 			  },
