@@ -7,6 +7,10 @@ import Faq from "../Pages/FAQ/Faq";
 import Props from "../Pages/Props/Props";
 
 import ProductDetails from "../Pages/SingleProp/SingleProp";
+import Cart from "../Pages/cart/Cart";
+import NotFound from "../Pages/NotFound/NotFound";
+import Services from "../Pages/services/Services";
+import Checkout from "../Pages/Checkout/Checkout";
 
 // export const router = createBrowserRouter([
 // 	{
@@ -56,6 +60,19 @@ const Routers = () => {
 				path='/productDetails/:id'
 				element={<ProductDetails/>}
 				/>
+				<Route 
+				path='/cart'
+				element={<Cart/>}
+				/>
+				<Route 
+				path='/services'
+				element={<Services/>}
+				/>
+				<Route 
+				path='/checkout'
+				element={<Checkout/>}
+				/>
+				 <Route path="*" element={<NotFound />} />
 			</Route>
 		</Routes>
 	);
