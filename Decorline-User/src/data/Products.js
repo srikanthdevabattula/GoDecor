@@ -10,22 +10,24 @@ export const Products=[
         id:1,
         name:'Vegan Leather Chair',
         price:3499,
-        wishlist:false,
+        wishlist:true,
         image:chair1,
         category:'Bathroom',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:3.5,
+        
 
     },
     {
         id:2,
         name:'Vegan Leather Chair',
         price:3499,
-        wishlist:false,
+        wishlist:true,
         image:product6,
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.5,
+       
     },
     {
         id:3,
@@ -36,6 +38,7 @@ export const Products=[
         category:'Bathroom',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:3.4,
+       
     },
     {
         id:4,
@@ -46,6 +49,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+        
     },
     {
         id:5,
@@ -56,6 +60,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:5,
+       
     },
     {
         id:6,
@@ -66,6 +71,7 @@ export const Products=[
         category:'Living Area',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4,
+       
     },
     {
         id:7,
@@ -76,6 +82,7 @@ export const Products=[
         category:'Living Area',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:8,
@@ -86,6 +93,7 @@ export const Products=[
         category:'Kitchen',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:5,
+       
     },
     {
         id:9,
@@ -96,6 +104,7 @@ export const Products=[
         category:'Kitchen',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+      
     },
     {
         id:10,
@@ -106,6 +115,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+     
     },
     {
         id:11,
@@ -116,6 +126,7 @@ export const Products=[
         category:'Bathroom',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:12,
@@ -126,6 +137,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+      
     },
     {
         id:13,
@@ -136,6 +148,7 @@ export const Products=[
         category:'Bathroom',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:14,
@@ -146,6 +159,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
    
     {
@@ -157,6 +171,7 @@ export const Products=[
         category:'Living Area',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:17,
@@ -167,6 +182,7 @@ export const Products=[
         category:'Living Area',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:18,
@@ -177,6 +193,7 @@ export const Products=[
         category:'Kitchen',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:19,
@@ -187,6 +204,7 @@ export const Products=[
         category:'Kitchen',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:20,
@@ -197,6 +215,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+      
     },
     {
         id:21,
@@ -207,6 +226,7 @@ export const Products=[
         category:'Bathroom',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+      
     },
     {
         id:22,
@@ -217,6 +237,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+     
     },
     {
         id:23,
@@ -227,6 +248,7 @@ export const Products=[
         category:'Bathroom',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+       
     },
     {
         id:24,
@@ -237,6 +259,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+      
     },
     {
         id:25,
@@ -247,6 +270,7 @@ export const Products=[
         category:'Bed Room',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',
         rating:4.4,
+        
     },
     {
         id:26,
@@ -255,6 +279,7 @@ export const Products=[
         wishlist:false,
         image:chair1,
         category:'Living Area'
+
     },
     {
         id:27,
@@ -262,7 +287,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product6,
-        category:'Living Area'
+        category:'Living Area',
+        rating:4.4,
+       
     },
     {
         id:28,
@@ -270,7 +297,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product3,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+      
     },
     {
         id:29,
@@ -278,7 +307,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product5,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+      
     },
     {
         id:30,
@@ -286,7 +317,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+      
     },
     {
         id:31,
@@ -294,7 +327,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Bathroom'
+        category:'Bathroom',
+        rating:4.4,
+     
     },
     {
         id:32,
@@ -302,7 +337,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product6,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
     {
         id:33,
@@ -310,7 +347,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product3,
-        category:'Bathroom'
+        category:'Bathroom',
+        rating:4.4,
+ 
     },
     {
         id:34,
@@ -318,7 +357,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product4,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
     {
         id:35,
@@ -326,7 +367,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product5,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+        
     },
     {
         id:36,
@@ -334,7 +377,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Living Area'
+        category:'Living Area',
+        rating:4.4,
+     
     },
     {
         id:37,
@@ -342,7 +387,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product6,
-        category:'Living Area'
+        category:'Living Area',
+        rating:4.4,
+      
     },
     {
         id:38,
@@ -350,7 +397,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product3,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+      
     },
     {
         id:39,
@@ -358,7 +407,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product5,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+      
     },
     {
         id:40,
@@ -366,7 +417,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
     {
         id:41,
@@ -374,7 +427,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Bathroom'
+        category:'Bathroom',
+        rating:4.4,
+      
     },
     {
         id:42,
@@ -382,7 +437,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product6,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+      
     },
     {
         id:43,
@@ -390,7 +447,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product3,
-        category:'Bathroom'
+        category:'Bathroom',
+        rating:4.4,
+       
     },
     {
         id:44,
@@ -398,7 +457,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product4,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+
     },
     {
         id:45,
@@ -406,7 +467,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product5,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
     {
         id:46,
@@ -414,7 +477,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Living Area'
+        category:'Living Area',
+        rating:4.4,
+       
     },
     {
         id:47,
@@ -422,7 +487,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product6,
-        category:'Living Area'
+        category:'Living Area',
+        rating:4.4,
+     
     },
     {
         id:48,
@@ -430,7 +497,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product3,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+    
     },
     {
         id:49,
@@ -438,7 +507,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product5,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+     
     },
     {
         id:50,
@@ -446,7 +517,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
     {
         id:51,
@@ -454,7 +527,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Bathroom'
+        category:'Bathroom',
+        rating:4.4,
+      
     },
     {
         id:52,
@@ -462,7 +537,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product6,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
     {
         id:53,
@@ -470,7 +547,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product3,
-        category:'Bathroom'
+        category:'Bathroom',
+        rating:4.4,
+      
     },
     {
         id:54,
@@ -478,7 +557,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product4,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+      
     },
     {
         id:55,
@@ -486,7 +567,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product5,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
     {
         id:56,
@@ -494,7 +577,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Living Area'
+        category:'Living Area',
+        rating:4.4,
+      
     },
     {
         id:57,
@@ -502,7 +587,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product6,
-        category:'Living Area'
+        category:'Living Area',
+        rating:4.4,
+    
     },
     {
         id:58,
@@ -510,7 +597,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product3,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+      
     },
     {
         id:59,
@@ -518,7 +607,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:product5,
-        category:'Kitchen'
+        category:'Kitchen',
+        rating:4.4,
+       
     },
     {
         id:60,
@@ -526,7 +617,9 @@ export const Products=[
         price:3499,
         wishlist:false,
         image:chair1,
-        category:'Bed Room'
+        category:'Bed Room',
+        rating:4.4,
+       
     },
 
 ]

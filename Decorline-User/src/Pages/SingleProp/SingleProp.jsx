@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { productsSelector } from '../../redux/reducers/productReducer';
+import { actions, cartSelector, productsSelector } from '../../redux/reducers/productReducer';
 import sprop from '../../assets/props/sprop.png';
 import { IoIosStar } from "react-icons/io";
 import { IoIosStarHalf } from "react-icons/io";
-
+import { IoHeartSharp } from "react-icons/io5";
+import { IoHeartOutline } from "react-icons/io5";
 import arrow from '../../assets/products/arrow.png';
 
 const ProductDetails = () => {
@@ -13,14 +14,15 @@ const ProductDetails = () => {
     const products = useSelector(productsSelector);
     const product = products.find(product => product.id === parseInt(id));
 
+    const dispatch=useDispatch()
+    const cart =useSelector(cartSelector)
 
- 
 
     if (!product) {
         return <div>Product not found</div>;
     }
 
-    const { name, price, description, image, rating, category } = product;
+    const { name, price, description, image, rating, category,wishlist } = product;
 
 
     const productcategory = useState(category);
@@ -67,6 +69,24 @@ const ProductDetails = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top when changing page number
     };
 
+
+    const handleAddToCart = (id) => {
+        dispatch(actions.cart(id));
+        dispatch(actions.total());
+      };
+      
+      const handleIncrement=(id)=>{
+        
+        dispatch(actions.increaseQuantity(id))
+        dispatch(actions.total())
+      }
+      const handleDecrement=(id)=>{
+        dispatch(actions.decreaseQuantity(id))
+        dispatch(actions.total())
+      }
+  
+      const quantityInCart = cart.find(item => item.id === product.id)?.quantity || 0;
+
     return (
         <div className='space-y-[40px]'>
             <div className='h-[250px] sm:h-[180px] bg-cover bg-center flex items-end justify-center' style={{ backgroundImage: `url(${sprop})` }}>
@@ -79,7 +99,9 @@ const ProductDetails = () => {
                 <h1 className='text-[#292F36] font-DMSerif text-[50px] lg:text-[40px] md:text-[30px] sm:text-[20px] pl-5'>Prop Detail</h1>
                 <div className='border-[1px] border-[#E7E7E7] rounded-[62px] md:rounded-[40px] sm:rounded-[20px] p-8 sm:p-4 flex sm:flex-col gap-10 sm:gap-5 w-[100%] '>
                     <div className='w-[50%] sm:w-[100%]'>
+                    <div onClick={()=>dispatch(actions.toggleWishlist(product.id))} className='absolute ml-6 mt-6 sm:mt-4 bg-[white] p-2 rounded-[100px] '>{wishlist? <IoHeartSharp className='text-[red] text-[30px] md:text-[22px] sm:text-[17px]'/>:<IoHeartOutline className='text-[30px]'/>}</div> 
                         <img src={image} alt={name} className='h-[478px] lg:h-[430px] md:h-[360px] sm:h-[250px] w-[100%] rounded-[18px]' />
+                      
                     </div>
                     <div className='w-[50%] sm:w-[100%] space-y-6 lg:space-y-4 md:space-y-2'>
                         <h2 className='text-[#292F36] font-DMSerif text-[27px] lg:text-[23px] md:text-[18px]'>{name}</h2>
@@ -90,11 +112,11 @@ const ProductDetails = () => {
                         </div>
                         <p className='text-[32px] lg:text-[27px] md:text-[23px] font-DMSerif'>₹ {price}</p>
                         <div className='flex gap-5 sm:gap-3 items-center'>
-                            <button className='bg-[#023020] rounded-[15px] p-[14px_90px] lg:p-[12px_60px] md:p-[10px_40px] sm:p-[7px_30px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]'>ADD TO CART</button>
+                            <button className='bg-[#023020] rounded-[15px] p-[14px_90px] lg:p-[12px_60px] md:p-[10px_40px] sm:p-[7px_30px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleAddToCart(product.id)}>ADD TO CART</button>
                             <div className='space-x-3 sm:space-x-2 flex items-center '>
-                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px]  font-extrabold text-[20px] rounded-[10px]'>-</button>
-                                <p className='text-[24px] lg:text-[21px] sm:text-[16px] font-DMSerif text-[#121212]'>{0}</p>
-                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px] font-extrabold text-[20px] rounded-[10px] '>+</button>
+                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px]  font-extrabold text-[20px] rounded-[10px]' onClick={()=>handleDecrement(product.id)}>-</button>
+                                <p className='text-[24px] lg:text-[21px] sm:text-[16px] font-DMSerif text-[#121212]'>{quantityInCart}</p>
+                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px] font-extrabold text-[20px] rounded-[10px] ' onClick={()=>handleIncrement(product.id)}>+</button>
                             </div>
                         </div>
                     </div>

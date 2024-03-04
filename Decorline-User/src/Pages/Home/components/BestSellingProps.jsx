@@ -14,7 +14,7 @@ const BestSellingProps = () => {
         <div className='px-[10%] sm:px-[5%] flex justify-center flex-wrap gap-10 sm:gap-5'>
           {
             bestSellingProducts.map((product,index)=>(
-              <div className='w-[400px] lg:w-[350px] md:w-[250px] sm:w-[120px]'>
+              <Link to={`/productDetails/${product.id}`}> <div className='w-[400px] lg:w-[350px] md:w-[250px] sm:w-[120px]'>
                <div className='space-y-2'>
                 <img src={product.image} alt=""className='w-[100%] h-[400px] md:h-[250px] sm:h-[120px]'/>
                 <div className='flex justify-between items-center'>
@@ -25,11 +25,12 @@ const BestSellingProps = () => {
                   <img src={arrow} alt=""  className='md:w-[30px] lg:w-[40px] w-[50px] sm:w-[25px]'/>
                 </div>
                </div>
-              </div>
+              </div></Link>
             ))
           }
             
         </div>
+        
         <div className='text-center text-[#4E5471] font-poppins text-[40px] lg:text-[35px] md:text-[30px] sm:text-[18px] mt-5'>
          <Link to='/props'><button>View All 🡪</button></Link> 
         </div>
