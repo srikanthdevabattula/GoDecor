@@ -7,7 +7,7 @@ import { useState } from "react";
 const Header = () => {
 	const [navbar,setnavbar]=useState(false)
 	return (
-		<header className="w-full h-[80px] sm:h-[auto] p-4 px-[5%] flex sm:flex-col items-center justify-center">
+		<header className="w-full h-[80px] sm:h-[auto] p-4 px-[5%] sm:px-[3%] flex sm:flex-col items-center justify-center">
 			<nav className="flex items-center justify-center space-x-[300px] lg:space-x-[150px] md:space-x-[80px] sm:space-x-3 sm:justify-between">
 				
 				<div className="flex items-center space-x-2"><img src={logo} alt="" className="w-[34px] h-[34px] lg:w-[27px] lg:h-[27px] md:h-[23px] md:w-[23px] sm:w-[17px] sm:h-[17px]" />

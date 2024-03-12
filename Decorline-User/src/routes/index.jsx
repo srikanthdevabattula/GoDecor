@@ -11,6 +11,8 @@ import Cart from "../Pages/cart/Cart";
 import NotFound from "../Pages/NotFound/NotFound";
 import Services from "../Pages/services/Services";
 import Checkout from "../Pages/Checkout/Checkout";
+import Orders from "../Pages/Orders/Orders";
+import BookConsultation from "../Pages/BookConsultation/BookConsultation";
 
 // export const router = createBrowserRouter([
 // 	{
@@ -71,6 +73,14 @@ const Routers = () => {
 				<Route 
 				path='/checkout'
 				element={<Checkout/>}
+				/>
+				<Route 
+				path='/orders'
+				element={<Orders/>}
+				/>
+				<Route 
+				path='/bookConsultation'
+				element={<BookConsultation/>}
 				/>
 				 <Route path="*" element={<NotFound />} />
 			</Route>
