@@ -99,8 +99,8 @@ const ProductDetails = () => {
                 <h1 className='text-[#292F36] font-DMSerif text-[50px] lg:text-[40px] md:text-[30px] sm:text-[20px] pl-5'>Prop Detail</h1>
                 <div className='border-[1px] border-[#E7E7E7] rounded-[62px] md:rounded-[40px] sm:rounded-[20px] p-8 sm:p-4 flex sm:flex-col gap-10 sm:gap-5 w-[100%] '>
                     <div className='w-[50%] sm:w-[100%]'>
-                    <div onClick={()=>dispatch(actions.toggleWishlist(product.id))} className='absolute ml-6 mt-6 sm:mt-4 bg-[white] p-2 rounded-[100px] '>{wishlist? <IoHeartSharp className='text-[red] text-[30px] md:text-[22px] sm:text-[17px]'/>:<IoHeartOutline className='text-[30px]'/>}</div> 
-                        <img src={image} alt={name} className='h-[478px] lg:h-[430px] md:h-[360px] sm:h-[250px] w-[100%] rounded-[18px]' />
+                    <div onClick={()=>dispatch(actions.toggleWishlist(product.id))} className='absolute ml-6 mt-6 sm:mt-4 bg-[white] p-2 rounded-[100px] '>{wishlist? <IoHeartSharp className='text-[red] text-[30px] md:text-[22px] sm:text-[17px]'/>:<IoHeartOutline className='text-[30px] md:text-[22px] sm:text-[17px]'/>}</div> 
+                        <img src={image} alt={name} className='h-[458px] lg:h-[410px] md:h-[340px] sm:h-[230px] esm:h-[200px] w-[100%] sm:w-[240px] rounded-[18px]' />
                       
                     </div>
                     <div className='w-[50%] sm:w-[100%] space-y-6 lg:space-y-4 md:space-y-2'>

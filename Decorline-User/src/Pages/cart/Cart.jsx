@@ -3,9 +3,21 @@ import sprop from '../../assets/props/sprop.png';
 import Address from './components/Address';
 import CartItems from './components/CartItems';
 import CartTotal from './components/CartTotal';
+import { useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 const Cart = () => {
-  return (
-    <div className='space-y-[40px]'>
+	const transition = { duration: 2, type: 'spring' };
+	const { ref, inView } = useInView({
+		triggerOnce: true, // Only trigger animation once
+		threshold: 0.5, // Trigger animation when element is 50% in view
+	});
+	return (
+
+		   <div ref={ref} className=' m-[2%] '>
+          <motion.div   initial={{ y: '30%' }}
+     // Start from below
+    animate={{ y: inView ? '100%' : '0%' }} // Animate to top when in view
+    transition={transition} className='space-y-[40px]'>
          <div className='h-[250px] sm:h-[180px] bg-cover bg-center flex items-end justify-center' style={{ backgroundImage: `url(${sprop})` }}>
     <div className='bg-[white] flex flex-col items-center justify-center rounded-tl-[37px] rounded-tr-[37px] h-[100px] w-[300px] sm:w-[180px]'>
         <h1 className='text-[#292F36] font-DMSerif text-[30px] sm:text-[20px]'>Cart</h1>
@@ -22,6 +34,7 @@ const Cart = () => {
         <CartTotal/>
     </div>
 </div>
+</motion.div>
 </div>
   )
 }
