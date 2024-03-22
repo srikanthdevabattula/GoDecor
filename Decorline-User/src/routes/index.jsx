@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import MainLayout from "../Layout/MainLayout";
 import Home from "../Pages/Home/Home";
 import ContactUs from "../Pages/ContactUs/ContactUs";
-import PricingAndPlan from "../Pages/PricingAndPlan/PricingAndPlan";
 import Faq from "../Pages/FAQ/Faq";
 import Props from "../Pages/Props/Props";
 
@@ -11,8 +10,12 @@ import Cart from "../Pages/cart/Cart";
 import NotFound from "../Pages/NotFound/NotFound";
 import Services from "../Pages/services/Services";
 import Checkout from "../Pages/Checkout/Checkout";
-import Orders from "../Pages/Orders/Orders";
+
 import BookConsultation from "../Pages/BookConsultation/BookConsultation";
+import Login from "../Pages/Authentication/Login";
+import OrderDetails from "../Pages/Orders/Order";
+import AllOrders from "../Pages/AllOrders/AllOrders";
+import Wishlist from "../Pages/Wishlist/Wishlist";
 
 // export const router = createBrowserRouter([
 // 	{
@@ -34,6 +37,12 @@ import BookConsultation from "../Pages/BookConsultation/BookConsultation";
 const Routers = () => {
 	return (
 		<Routes>
+			
+			<Route 
+			path="/login"
+			element={<Login/>}
+			/>
+			
 			<Route
 				path="/"
 				element={<MainLayout></MainLayout>}
@@ -46,41 +55,46 @@ const Routers = () => {
 					path="/contactUs"
 					element={<ContactUs />}
 				/>
-				<Route 
-				path='/pricing'
-				element={<PricingAndPlan/>}
-				/>
+				
 					<Route 
-				path='/faq'
-				element={<Faq/>}
+				path='/faqs'
+				element={<Faq />}
 				/>
 				<Route 
 				path='/props'
-				element={<Props/>}
+				element={<Props />}
 				/>
 				<Route
 				path='/productDetails/:id'
-				element={<ProductDetails/>}
+				element={<ProductDetails />}
 				/>
 				<Route 
 				path='/cart'
-				element={<Cart/>}
+				element={<Cart />}
 				/>
 				<Route 
 				path='/services'
-				element={<Services/>}
+				element={<Services />}
+				/>
+				<Route 
+				path='/wishlist'
+				element={<Wishlist />}
 				/>
 				<Route 
 				path='/checkout'
-				element={<Checkout/>}
+				element={<Checkout />}
+				/>
+				<Route
+				path='/orders'
+				element={<AllOrders />}
 				/>
 				<Route 
-				path='/orders'
-				element={<Orders/>}
+				path='/orderDetails'
+				element={<OrderDetails />}
 				/>
 				<Route 
 				path='/bookConsultation'
-				element={<BookConsultation/>}
+				element={<BookConsultation />}
 				/>
 				 <Route path="*" element={<NotFound />} />
 			</Route>

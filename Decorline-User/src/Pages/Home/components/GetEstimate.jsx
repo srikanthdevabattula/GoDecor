@@ -19,7 +19,7 @@ that it has a more-or-less normal.</p>
 
     </div>
 </div>
-<Link to='/pricing'> <button className='bg-[#292F36] p-[26px_31px] md:p-[18px_25px] sm:p-[13px_13px] rounded-[18px] text-[white] font-Jost text-[18px] md:text-[15px] font-bold my-4 sm:my-2'>Get Free Estimate <span className='text-[#CDA274]'>🡪</span></button>
+<Link to='/bookConsultation'> <button className='bg-[#292F36] p-[26px_31px] md:p-[18px_25px] sm:p-[13px_13px] rounded-[18px] text-[white] font-Jost text-[18px] md:text-[15px] font-bold my-4 sm:my-2'>Get Free Estimate <span className='text-[#CDA274]'>🡪</span></button>
 </Link> </div>
        <div className='w-[50%] sm:order-1 sm:w-[100%]'><img src={getEst} alt="a" className='rounded-bl-[100px] rounded-tr-[100px] h-[100%]'/></div>
     </div>

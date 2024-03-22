@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import Routers from "./routes";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./redux/store";
 
+
+
 function ScrollToTop() {
+ 
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -14,7 +17,12 @@ function ScrollToTop() {
   return null;
 }
 
+  
+
 function App() {
+
+
+
   return (
     <Provider store={store}>
       <BrowserRouter>

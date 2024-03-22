@@ -7,7 +7,7 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import PastOrders from './components/PastOrders';
 import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion';
-const Orders = () => {
+const OrderDetails = () => {
     const transition = { duration: 2, type: 'spring' };
 	const { ref, inView } = useInView({
 		triggerOnce: true, // Only trigger animation once
@@ -132,4 +132,4 @@ const Orders = () => {
   )
 }
 
-export default Orders
+export default OrderDetails

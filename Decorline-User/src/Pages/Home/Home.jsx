@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Achivements from "./components/Achivements";
 import BestSellingProps from "./components/BestSellingProps";
 import Discount from "./components/Discount";
@@ -8,12 +9,17 @@ import Reviews from "./components/Reviews";
 import YourNeeds from "./components/YourNeeds";
 import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 const Home = () => {
+	
 	const transition = { duration: 2, type: 'spring' };
 	const { ref, inView } = useInView({
 		triggerOnce: true, // Only trigger animation once
 		threshold: 0.5, // Trigger animation when element is 50% in view
 	});
+	
+
+
 	return (
 
 		   <div ref={ref} className=' m-[2%] '>
