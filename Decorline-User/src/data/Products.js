@@ -10,7 +10,7 @@ export const Products=[
         id:1,
         name:'Vegan Leather Chair',
         price:3499,
-        wishlist:true,
+        wishlist:false,
         image:chair1,
         category:'Bathroom',
         description:'Lorem ipsum dolor sit amet, adipiscing Aliquam eu sem vitae turpis dignissim maximus.posuere in.Contrary to popular belief. Lorem Ipsum is not simply random text. It has roots in a piece of classica.',

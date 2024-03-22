@@ -1,12 +1,35 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
 
 import {Products} from '../../data/Products'
-import { createSlice } from "@reduxjs/toolkit"
+
+
+
+
 const initialState={
+ 
     products:Products,
     cartItems:[],
     totalAmount:0,
+    status: 'idle',
+    error:null,
 }
 
+
+// Thunk action to fetch products
+export const fetchAllProducts = createAsyncThunk(
+  'products/fetchAllProducts',
+  async () => {
+    try {
+      const response = await axios.get('https://godecor.api.ricoz.in/api/v1/product/getAllProducts');
+      console.log(response.data.data)
+      return response.data.data; // Assuming you want to slice first four products
+    } catch (error) {
+      throw Error('Error fetching data:', error);
+    }
+  }
+);
 
 const productSlice= createSlice({
     name:'products',
@@ -79,8 +102,23 @@ const productSlice= createSlice({
             }, 0);
           },
 
-    }
-})
+    },
+    extraReducers: (builder) => {
+      builder
+          .addCase(fetchAllProducts.pending, (state) => {
+              state.status = 'loading';
+          })
+          .addCase(fetchAllProducts.fulfilled, (state, action) => {
+              state.status = 'succeeded';
+              state.products = action.payload;
+          })
+          .addCase(fetchAllProducts.rejected, (state, action) => {
+              state.status = 'failed';
+              state.error = action.error.message;
+          });
+  },
+});
+
 
 
 
@@ -93,3 +131,11 @@ export const productsSelector=(state)=>state.productsReducer.products
 export const cartSelector=(state)=>state.productsReducer.cartItems
 
 export const totalSelector=(state)=>state.productsReducer.totalAmount
+
+
+export const selectProductsStatus = state => state.productsReducer.status;
+
+export const selectProductsError = state => state.productsReducer.error;
+
+
+

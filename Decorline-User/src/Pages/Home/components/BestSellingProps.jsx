@@ -7,14 +7,14 @@ import { Link } from 'react-router-dom';
 const BestSellingProps = () => {
   const products=useSelector(productsSelector)
   const bestSellingProducts=products.slice(0,4)
-  console.log(bestSellingProducts)
+
   return (
     <div>
         <h1 className='text-[50px] lg:text-[40px] md:text-[35px] sm:text-[25px] text-center my-[40px] text-[#292F36] font-DMSerif'>Best Selling Props</h1>
         <div className='px-[10%] sm:px-[5%] flex justify-center flex-wrap gap-10 sm:gap-5'>
           {
             bestSellingProducts.map((product,index)=>(
-              <Link to={`/productDetails/${product.id}`}> <div className='w-[400px] lg:w-[350px] md:w-[250px] sm:w-[120px]'>
+              <Link to={`/productDetails/${product.id}`} key={index}> <div className='w-[400px] lg:w-[350px] md:w-[250px] sm:w-[120px]'>
                <div className='space-y-2'>
                 <img src={product.image} alt=""className='w-[100%] h-[400px] md:h-[250px] sm:h-[120px]'/>
                 <div className='flex justify-between items-center'>

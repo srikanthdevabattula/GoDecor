@@ -8,7 +8,7 @@ export default defineConfig({
 		port: 4001,
 		proxy: {
 			"/api": {
-				target: "https://decorline-backend.onrender.com/api/v1",
+				target: "https://go-decor.vercel.app/api/v1",
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},

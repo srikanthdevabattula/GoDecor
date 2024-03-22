@@ -3,7 +3,10 @@ import services from '../../assets/Services/services.jpg'
 import Category from './components/Category';
 import DesignTypes from './components/DesignTypes';
 import JoinWithus from '../Home/components/JoinWithus';
+import { useSelector } from 'react-redux';
+import { productsSelector } from '../../redux/reducers/productReducer';
 const Services = () => {
+    const allproducts=useSelector(productsSelector)
     const backgroundImageStyle = {
         backgroundImage: `url(${services})`,
         
@@ -14,6 +17,7 @@ const Services = () => {
           // Scroll to the Products component when the component mounts
           productsRef.current.scrollIntoView({ behavior: 'smooth' });
       }, []);
+      console.log(allproducts)
   return (
     <div className=' space-y-4' ref={productsRef}>
         <div className='h-[250px] sm:h-[180px] bg-cover bg-center flex items-end justify-center' style={backgroundImageStyle}>
