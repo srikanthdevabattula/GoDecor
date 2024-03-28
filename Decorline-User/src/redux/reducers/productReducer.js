@@ -9,11 +9,12 @@ import {Products} from '../../data/Products'
 
 const initialState={
  
-    products:Products,
+    products:null,
     cartItems:[],
     totalAmount:0,
     status: 'idle',
     error:null,
+    isDataFetched: false, 
 }
 
 
@@ -37,39 +38,39 @@ const productSlice= createSlice({
     reducers:{
         toggleWishlist:(state,action)=>{
             state.products.map((product,i)=>{
-                if(product.id===action.payload){
+                if(product._id===action.payload){
                     product.wishlist= !product.wishlist
                 }
                 return product;
             })
         },
         cart:(state, action) => {
-            const existingItem = state.cartItems.find(item => item.id === action.payload);
+            const existingItem = state.cartItems.find(item => item._id === action.payload);
       
             if (existingItem) {
               // If the product is already in the cart, increase its quantity
               existingItem.quantity += 1;
             } else {
               // If the product is not in the cart, add it with quantity 1
-              const productToAdd = state.products.find(product => product.id === action.payload);
+              const productToAdd = state.products.find(product => product._id === action.payload);
               state.cartItems.push({ ...productToAdd, quantity: 1 });
             }
           },
           increaseQuantity: (state, action) => {
-            const existingItem = state.cartItems.find(item => item.id === action.payload);
+            const existingItem = state.cartItems.find(item => item._id === action.payload);
           
             if (existingItem) {
               // If the item is already in the cart, increase its quantity
               existingItem.quantity += 1;
             } else {
               // If the item is not in the cart, add it with quantity 1
-              const productToAdd = state.products.find(product => product.id === action.payload);
+              const productToAdd = state.products.find(product => product._id === action.payload);
               state.cartItems.push({ ...productToAdd, quantity: 1 });
             }
           },
           decreaseQuantity: (state, action) => {
             state.cartItems = state.cartItems.map((item) => {
-              if (item.id === action.payload) {
+              if (item._id === action.payload) {
                 // Decrease quantity
                 item.quantity -= 1;
       
@@ -83,7 +84,7 @@ const productSlice= createSlice({
           },
           deleteItem:(state,action)=>{
             state.cartItems = state.cartItems.map((item) => {
-                if (item.id === action.payload) {
+                if (item._id === action.payload) {
                   // Decrease quantity
                   item.quantity = 0;
         

@@ -65,9 +65,9 @@ const Routers = () => {
 				element={<Props />}
 				/>
 				<Route
-				path='/productDetails/:id'
-				element={<ProductDetails />}
-				/>
+    path='/productDetails/:_id'
+    element={<ProductDetails />}
+/>
 				<Route 
 				path='/cart'
 				element={<Cart />}

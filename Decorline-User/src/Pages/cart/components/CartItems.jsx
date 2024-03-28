@@ -35,8 +35,8 @@ const dispatch =useDispatch()
                 {cartItems.map((item,index)=>(
                     <div className='flex items-center'>
                         <div className='flex items-center w-[45%] space-x-4 lg:space-x-2'>
-                        <CiCircleRemove onClick={()=>handleDelete(item.id)} className='text-[30px] lg:text-[27px] md:text-[25px] sm:text-[20px] text-[#EE5858]' />
-                        <img src={item.image} alt="" className='h-[100px] w-[100px] lg:w-[80px] lg:h-[80px] sm:w-[35px] sm:h-[35px] rounded-[8px]'/>
+                        <CiCircleRemove onClick={()=>handleDelete(item._id)} className='text-[30px] lg:text-[27px] md:text-[25px] sm:text-[20px] text-[#EE5858]' />
+                        <img src={item.images[0]} alt="" className='h-[100px] w-[100px] lg:w-[80px] lg:h-[80px] sm:w-[35px] sm:h-[35px] rounded-[8px]'/>
                         <h3 className='text-[#191C1F] text-[14px] lg:text-[12px] md:text-[11px] sm:text-[7px] font-Roboto'>{item.name}</h3>
 
                         </div>
@@ -45,9 +45,9 @@ const dispatch =useDispatch()
                            <h1 className='text-center text-[#475156] text-[14px] lg:text-[12px] md:text-[11px] sm:text-[8px]'>₹ {item.price}</h1> 
                         </div>
                         <div className='space-x-3 sm:space-x-1 flex w-[25%] justify-center items-center  '>
-                                <button className='border-[#E4E7E9] border-[1px] p-[7px_15px] lg:p-[5px_10px] md:p-[4px_9px] sm:p-[0px_3px]   text-[16px] lg:text-[14px] sm:text-[8px] rounded-[10px]' onClick={()=>handleDecrement(item.id)}>-</button>
+                                <button className='border-[#E4E7E9] border-[1px] p-[7px_15px] lg:p-[5px_10px] md:p-[4px_9px] sm:p-[0px_3px]   text-[16px] lg:text-[14px] sm:text-[8px] rounded-[10px]' onClick={()=>handleDecrement(item._id)}>-</button>
                                 <p className='text-[16px] lg:text-[15px] sm:text-[10px]  text-[#475156]'>{item.quantity}</p>
-                                <button className='border-[#E4E7E9] border-[1px] p-[7px_15px] lg:p-[5px_10px] md:p-[4px_9px] sm:p-[0px_3px]  text-[16px] lg:text-[14px]  sm:text-[8px] rounded-[10px] ' onClick={()=>handleIncrement(item.id)}>+</button>
+                                <button className='border-[#E4E7E9] border-[1px] p-[7px_15px] lg:p-[5px_10px] md:p-[4px_9px] sm:p-[0px_3px]  text-[16px] lg:text-[14px]  sm:text-[8px] rounded-[10px] ' onClick={()=>handleIncrement(item._id)}>+</button>
                             </div>
 
                             <div className='w-[15%] text-center text-[14px] lg:text-[12px] md:text-[11px] sm:text-[8px] font-medium text-[#191C1F]'>

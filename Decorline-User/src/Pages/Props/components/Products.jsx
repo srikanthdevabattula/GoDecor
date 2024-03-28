@@ -5,12 +5,14 @@ import arrow from '../../../assets/products/arrow.png';
 import { Link } from 'react-router-dom';
 
 const Products = () => {
-    const [category, setCategory] = useState('Bathroom');
+    const [category, setCategory] = useState('bathroom');
     const [currentPage, setCurrentPage] = useState(1);
     const products = useSelector(productsSelector);
+    
     const productsPerPage = 8;
 
-    const filteredProducts = products.filter(product => product.category === category);
+    const filteredProducts = products.filter(product => product.category == category);
+    console.log(filteredProducts)
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -34,18 +36,18 @@ const Products = () => {
         <div className=''>
             <div className='flex justify-center'>
                 <div className='border-[#CDA274] flex border-[1px] rounded-[18px] h-[75px] lg:h-[60px] md:h-[50px] sm:h-[35px] w-[880px] lg:w-[700px] md:w-[500px] sm:w-[280px]'>
-                    <button onClick={() => changeCategory('Bathroom')} className={`text-center w-[25%] ${category === 'Bathroom' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Bathroom</button>
-                    <button onClick={() => changeCategory('Bed Room')} className={`text-center w-[25%] ${category === 'Bed Room' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Bed Room</button>
-                    <button onClick={() => changeCategory('Kitchen')} className={`text-center w-[25%] ${category === 'Kitchen' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Kitchen</button>
-                    <button onClick={() => changeCategory('Living Area')} className={`text-center w-[25%] ${category === 'Living Area' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Living Area</button>
+                    <button onClick={() => changeCategory('bathroom')} className={`text-center w-[25%] ${category == 'bathroom' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Bathroom</button>
+                    <button onClick={() => changeCategory('bed room')} className={`text-center w-[25%] ${category == 'bed room' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Bed Room</button>
+                    <button onClick={() => changeCategory('kitchen')} className={`text-center w-[25%] ${category == 'kitchen' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Kitchen</button>
+                    <button onClick={() => changeCategory('living area')} className={`text-center w-[25%] ${category == 'living area' && 'bg-[#CDA274] rounded-[18px] text-[white]'} font-Jost text-[18px] lg:text-[16px] md:text-[14px] sm:text-[10px] font-semibold`}>Living Area</button>
                 </div>
             </div>
             <div className='px-[10%] sm:px-[5%] my-[40px] flex  flex-wrap   items-center justify-center gap-[40px] sm:gap-[25px]'>
                 {
                     currentProducts.map((product, index) => (
                         <div key={index} className='w-[400px]  lg:w-[350px] md:w-[250px] sm:w-[120px]'>
-                           <Link to={`/productDetails/${product.id}`}> <div className='space-y-2'>
-                                <img src={product.image} alt="" className='w-[100%] h-[400px] md:h-[300px] sm:h-[120px]' />
+                           <Link to={`/productDetails/${product._id}`} > <div className='space-y-2'>
+                                <img src={product.images[0]} alt="" className='w-[100%] h-[400px] md:h-[300px] sm:h-[120px]' />
                                 <div className='flex justify-between items-center'>
                                     <div className='space-y-2'>
                                         <h1 className='text-[#292F36] font-DMSerif text-[25px] lg:text-[22px] md:text-[17px] sm:text-[10px]'>{product.name}</h1>
