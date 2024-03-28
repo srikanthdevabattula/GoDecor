@@ -1,13 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Navbar from "../components/Navbar/Navbar";
-
+import Cookies from "js-cookie";
 const MainLayout = () => {
-	const login=true
-	if (!login){
-		return <Navigate to='/Welcome' />
-
-	}
+	const token = Cookies.get('token');
+    if (!token) {
+        return <Navigate to='/login' />;
+    }
 	return (
 		<main className="flex ">
 			<Header />

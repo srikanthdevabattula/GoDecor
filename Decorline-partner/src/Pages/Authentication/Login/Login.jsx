@@ -4,9 +4,49 @@ import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import google from '../../../assets/authentication/google.png'
 import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion';
+
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'; // Import GoogleOAuthProvider and GoogleLogin
+import { jwtDecode } from "jwt-decode";
+import Cookies from 'js-cookie';
 const Login = () => {
     const transition = { duration: 2, type: 'spring' };
     const [showOtp, setOTP] = useState(false);
+    const [error, setError] = useState('');
+    const token = Cookies.get('token');
+    if (token) {
+        return <Navigate to='/' />;
+    }
+    const handleGoogleLoginSuccess = async (credentialResponse) => {
+      console.log(credentialResponse)
+        const credentialResponseDecoded=jwtDecode(
+            credentialResponse.credential
+        );
+        console.log(credentialResponseDecoded)
+        try {
+            const { sub: googleId, email } = credentialResponseDecoded; // Extract Google ID and email from the response object
+            console.log('Google ID:', googleId);
+            console.log('Email:', email);
+        
+          // Send Google credentials to backend for authentication
+          const response = await axios.post('https://go-decor.vercel.app/api/v1/loginUser', {
+            "role": 'vendor',
+            "googleId":googleId,
+            "email": email
+          });
+
+          Cookies.set('token', response.data.data.token, { expires: 7 }); // Token expires in 7 days
+
+          history('/')
+          // Handle authentication success
+          // console.log('Authentication successful:', response.data.data.token);
+        } catch (error) {
+          // Handle authentication failure
+          console.error('Authentication failed:', error);
+        }
+      };
+    const handleError = () => {
+      console.log('Login Failed');
+    };
     const handleToggleOtp = () => {
         setOTP(!showOtp);
       };
@@ -15,6 +55,8 @@ const Login = () => {
         threshold: 0.5, // Trigger animation when element is 50% in view
       });
   return (
+    <GoogleOAuthProvider clientId="262341592503-cnh121vfaqm6k2cja7vaifecoiiv73lg.apps.googleusercontent.com"> 
+     
     <div className='h-[100vh]'>
       <div className='flex sm:flex-col items-center sm:items-start'>
         <div className='flex-1 sm:order-2 h-[100vh] p-[5%_0%_5%_5%] sm:p-1 sm:flex-2 w-[100%]'>
@@ -76,8 +118,15 @@ const Login = () => {
               <div className='flex justify-center items-center space-x-2 '>
                   <hr className='border-[1px] w-[100px]' /> <h5 className='sm:text-[10px] font-poppins font-medium text-[#171717]'>Or</h5><hr className='border-[1px] w-[100px]' />
                 </div>
-                <button  className=' w-[400px] h-[57px] md:w-[300px] md:h-[45px] sm:w-[250px]  border-[1px] border-[#5A5A5A] rounded-[10px] text-[18px] lg:text-[16px] md:text-[14px] sm:text-[12px] flex items-center justify-center text-[#737373] font-poppins font-semibold'><img src={google} alt="" className='mr-2' />Continue with Google</button>
-                <button type='submit' className='bg-[#023020] hover:bg-[#342121] text-[white]  w-[400px] h-[57px] md:w-[300px] md:h-[45px] sm:w-[250px]  border-[1px] border-[#5A5A5A] rounded-[10px] text-[18px] lg:text-[16px] md:text-[14px] sm:text-[12px] font-medium  '>Login</button>
+                <div className='flex items-center justify-center my-[30px]'>
+               
+                 <GoogleLogin
+        onSuccess={handleGoogleLoginSuccess}
+        onError={handleError}
+      />
+    
+              </div>
+                 <button type='submit' className='bg-[#023020] hover:bg-[#342121] text-[white]  w-[400px] h-[57px] md:w-[300px] md:h-[45px] sm:w-[250px]  border-[1px] border-[#5A5A5A] rounded-[10px] text-[18px] lg:text-[16px] md:text-[14px] sm:text-[12px] font-medium  '>Login</button>
               </form>
            
               </motion.div> </div>
@@ -85,6 +134,7 @@ const Login = () => {
         <RightComponent />
       </div>
     </div>
+    </GoogleOAuthProvider> 
   )
 }
 
