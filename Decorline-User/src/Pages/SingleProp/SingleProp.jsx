@@ -10,22 +10,28 @@ import { IoHeartOutline } from "react-icons/io5";
 import arrow from '../../assets/products/arrow.png';
 
 const ProductDetails = () => {
-    const { id } = useParams();
+   
+    const { _id } = useParams();
+    const dispatch = useDispatch();
     const products = useSelector(productsSelector);
-    const product = products.find(product => product.id === parseInt(id));
+    const product = products.find(product => product._id === _id);
+    const cart = useSelector(cartSelector);
+    const [productcategory, setProductCategory] = useState(null);
 
-    const dispatch=useDispatch()
-    const cart =useSelector(cartSelector)
-
+    useEffect(() => {
+        if (product) {
+            setProductCategory(product.category);
+        }
+    }, [product]);
 
     if (!product) {
         return <div>Product not found</div>;
     }
 
-    const { name, price, description, image, rating, category,wishlist } = product;
+    const { name, price, description, images, rating, category,wishlist } = product;
 
 
-    const productcategory = useState(category);
+    // const productcategory = useState(category);
     const [currentPage, setCurrentPage] = useState(1);
     const productsCat = useSelector(productsSelector);
     const productsPerPage = 6;
@@ -85,7 +91,7 @@ const ProductDetails = () => {
         dispatch(actions.total())
       }
   
-      const quantityInCart = cart.find(item => item.id === product.id)?.quantity || 0;
+      const quantityInCart = cart.find(item => item._id === product._id)?.quantity || 0;
 
     return (
         <div className='space-y-[40px]'>
@@ -100,7 +106,7 @@ const ProductDetails = () => {
                 <div className='border-[1px] border-[#E7E7E7] rounded-[62px] md:rounded-[40px] sm:rounded-[20px] p-8 sm:p-4 flex sm:flex-col gap-10 sm:gap-5 w-[100%] '>
                     <div className='w-[50%] sm:w-[100%]'>
                     <div onClick={()=>dispatch(actions.toggleWishlist(product.id))} className='absolute ml-6 mt-6 sm:mt-4 bg-[white] p-2 rounded-[100px] '>{wishlist? <IoHeartSharp className='text-[red] text-[30px] md:text-[22px] sm:text-[17px]'/>:<IoHeartOutline className='text-[30px] md:text-[22px] sm:text-[17px]'/>}</div> 
-                        <img src={image} alt={name} className='h-[458px] lg:h-[410px] md:h-[340px] sm:h-[230px] esm:h-[200px] w-[100%] sm:w-[240px] rounded-[18px]' />
+                        <img src={images[0]} alt={name} className='h-[458px] lg:h-[410px] md:h-[340px] sm:h-[230px] esm:h-[200px] w-[100%] sm:w-[240px] rounded-[18px]' />
                       
                     </div>
                     <div className='w-[50%] sm:w-[100%] space-y-6 lg:space-y-4 md:space-y-2'>
@@ -112,11 +118,11 @@ const ProductDetails = () => {
                         </div>
                         <p className='text-[32px] lg:text-[27px] md:text-[23px] font-DMSerif'>₹ {price}</p>
                         <div className='flex gap-5 sm:gap-3 items-center'>
-                            <button className='bg-[#023020] rounded-[15px] p-[14px_90px] lg:p-[12px_60px] md:p-[10px_40px] sm:p-[7px_30px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleAddToCart(product.id)}>ADD TO CART</button>
+                            <button className='bg-[#023020] rounded-[15px] p-[14px_90px] lg:p-[12px_60px] md:p-[10px_40px] sm:p-[7px_30px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleAddToCart(product._id)}>ADD TO CART</button>
                             <div className='space-x-3 sm:space-x-2 flex items-center '>
-                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px]  font-extrabold text-[20px] rounded-[10px]' onClick={()=>handleDecrement(product.id)}>-</button>
+                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px]  font-extrabold text-[20px] rounded-[10px]' onClick={()=>handleDecrement(product._id)}>-</button>
                                 <p className='text-[24px] lg:text-[21px] sm:text-[16px] font-DMSerif text-[#121212]'>{quantityInCart}</p>
-                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px] font-extrabold text-[20px] rounded-[10px] ' onClick={()=>handleIncrement(product.id)}>+</button>
+                                <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px] font-extrabold text-[20px] rounded-[10px] ' onClick={()=>handleIncrement(product._id)}>+</button>
                             </div>
                         </div>
                     </div>
@@ -131,8 +137,8 @@ const ProductDetails = () => {
                 {
                     currentProducts.map((product, index) => (
                         <div key={index} className='w-[350px]  lg:w-[280px] md:w-[250px] sm:w-[150px] esm:w-[130px] rounded-[50px] sm:rounded-[20px] border-[#E7E7E7] border-[1px] p-[30px] md:p-[20px] sm:p-[10px]'>
-                           <Link to={`/productDetails/${product.id}`}> <div className='space-y-2' onClick={() => handleProductChange()}>
-                                <img src={product.image} alt="" className='w-[100%] h-[300px] lg:h-[220px] md:h-[200px] sm:h-[120px] rounded-[30px_30px_10px_10px]' />
+                           <Link to={`/productDetails/${product._id}`}> <div className='space-y-2' onClick={() => handleProductChange()}>
+                                <img src={product.images[0]} alt="" className='w-[100%] h-[300px] lg:h-[220px] md:h-[200px] sm:h-[120px] rounded-[30px_30px_10px_10px]' />
                                 <div className='flex justify-between items-center'>
                                     <div className='space-y-2'>
                                         <h1 className='text-[#292F36] font-DMSerif text-[25px] lg:text-[22px] md:text-[17px] sm:text-[10px]'>{product.name}</h1>

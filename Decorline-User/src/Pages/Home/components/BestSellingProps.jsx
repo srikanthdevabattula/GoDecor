@@ -14,9 +14,11 @@ const BestSellingProps = () => {
         <div className='px-[10%] sm:px-[5%] flex justify-center flex-wrap gap-10 sm:gap-5'>
           {
             bestSellingProducts.map((product,index)=>(
-              <Link to={`/productDetails/${product.id}`} key={index}> <div className='w-[400px] lg:w-[350px] md:w-[250px] sm:w-[120px]'>
+              <Link to={`/productDetails/${product._id}`} key={index}> <div className='w-[400px] lg:w-[350px] md:w-[250px] sm:w-[120px]'>
                <div className='space-y-2'>
-                <img src={product.image} alt=""className='w-[100%] h-[400px] md:h-[250px] sm:h-[120px]'/>
+               {product.images && (
+  <img src={product.images.slice(0,1)} alt=""className='w-[100%] h-[400px] md:h-[250px] sm:h-[120px]'/>
+)}
                 <div className='flex justify-between items-center'>
                   <div className='space-y-2'>
                     <h1 className='text-[#292F36] font-DMSerif text-[25px] lg:text-[22px] md:text-[17px] sm:text-[10px]'>{product.name}</h1>
