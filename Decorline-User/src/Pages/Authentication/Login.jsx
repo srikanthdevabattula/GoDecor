@@ -6,10 +6,15 @@ import logo from '../../assets/logo.png';
 import loginpage from '../../assets/login.png';
 import google from '../../assets/google 2.png';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'; // Import GoogleOAuthProvider and GoogleLogin
+import { jwtDecode } from "jwt-decode";
 
 
 
 import Cookies from 'js-cookie';
+
+
+
 
 
 const Login = () => {
@@ -24,20 +29,58 @@ const Login = () => {
         return <Navigate to='/' />;
     }
  
+    const handleGoogleLoginSuccess = async (credentialResponse) => {
+      console.log(credentialResponse)
+        const credentialResponseDecoded=jwtDecode(
+            credentialResponse.credential
+        );
+        console.log(credentialResponseDecoded)
+        try {
+            const { sub: googleId, email } = credentialResponseDecoded; // Extract Google ID and email from the response object
+            console.log('Google ID:', googleId);
+            console.log('Email:', email);
 
-    const handleGoogleLogin = async () => {
-      try {
-          // Assuming your backend endpoint for Google OAuth is correct and returns user data
-          const response = await axios.get('https://go-decor.vercel.app/api/v1/google');
-          const { email, googleId } = response.data;
-          await axios.post('https://go-decor.vercel.app/api/v1/loginUser', { googleId, email, role: 'user' });
-          // Assuming successful login, redirect to home page
-          history.push('/');
-      } catch (error) {
-          console.error('Error while Google sign-in:', error);
-          setError('Error occurred during Google sign-in');
-      }
-  };
+          // Send Google credentials to backend for authentication
+          const response = await axios.post('https://go-decor.vercel.app/api/v1/loginUser', {
+            "role": 'user',
+            "googleId":googleId,
+            "email": email
+          });
+
+          Cookies.set('token', response.data.data.token, { expires: 7 }); // Token expires in 7 days
+
+
+          history('/')
+          // Handle authentication success
+          // console.log('Authentication successful:', response.data.data.token);
+        } catch (error) {
+          // Handle authentication failure
+          console.error('Authentication failed:', error);
+        }
+      };
+    const handleError = () => {
+      console.log('Login Failed');
+    };
+
+  //   const handleGoogleLogin = async () => {
+  //     try {
+  //         // Assuming your backend endpoint for Google OAuth is correct and returns user data
+  //         const response = await axios.get('https://go-decor.vercel.app/api/v1/google');
+  //         const { email, id } = response.data;
+  //         await axios.post('https://go-decor.vercel.app/api/v1/loginUser', { googleId:id, email, role: 'user' });
+  //         // Assuming successful login, redirect to home page
+  //         history.push('/');
+  //     } catch (error) {
+  //         console.error('Error while Google sign-in:', error);
+  //         setError('Error occurred during Google sign-in');
+  //     }
+  // };
+
+//   const handleGoogleLogin = async () => {
+//     // Redirect the user to the backend route responsible for initiating OAuth flow
+//     window.location.href = 'https://go-decor.vercel.app/api/v1/google';
+// };
+
   
     const handleToggleOtp = () => {
       setShowOtp(!showOtp);
@@ -54,10 +97,12 @@ const Login = () => {
     };
   
     return (
+      <GoogleOAuthProvider clientId="262341592503-cnh121vfaqm6k2cja7vaifecoiiv73lg.apps.googleusercontent.com"> 
+     
      <div className='p-[50px] sm:p-[10px]'>
         <div className='flex items-center space-x-2'>
-          <img src={logo} alt="Logo" />
-          <h1 className='text-[#292F36] font-DMSerif text-[40px] md:text-[30px] sm:text-[25px]'>GoDecor</h1>
+          {/* <img src={logo} alt="Logo" /> */}
+          {/* <h1 className='text-[#292F36] font-DMSerif text-[40px] md:text-[30px] sm:text-[25px]'>GoDecor</h1> */}
         </div>
         <div className='flex'>
           <div className='w-[50%] md:hidden p-[3%] lg:p-[1%]'>
@@ -68,11 +113,26 @@ const Login = () => {
             {userLogin ? (
               <div>
                 <h3 className='text-[25px] md:text-[20px] sm:text-[15px] font-poppins font-semibold border-b-[1px] border-[#62B179] w-[180px] mt-4'>LOGIN/SIGNUP</h3>
-                <div className='flex items-center justify-center my-[30px]'>
-                            <button onClick={handleGoogleLogin} className='border-[1px] p-2'>
+                {/* <div className='flex items-center justify-center my-[30px]'>
+                            <button onClick={e=>handleGoogleLogin()} className='border-[1px] p-2 flex items-center'>
                                 <img src={google} alt="Google Icon" className='w-5 h-5 mr-2' /> Google sign in
                             </button>
-                        </div>
+                        </div> */}
+
+
+
+
+                        <div className='flex items-center justify-center my-[30px]'>
+
+                        <GoogleLogin
+                            onSuccess={handleGoogleLoginSuccess}
+                            onError={handleError}
+                                      />
+
+                                      </div>
+
+
+
               <div className='text-[17px] md:text-[14px] sm:text-[12px] text-[#A3A3A3] font-medium font-Roboto text-center my-4'><h1>-OR-</h1></div>
               <div className='px-[5%] sm:px-[2%] '>
                 <form onSubmit={handleLoginSubmit} className='space-y-4 text-[17px] md:text-[14px] sm:text-[12px]'>
@@ -120,6 +180,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </GoogleOAuthProvider>
   
   );
 };

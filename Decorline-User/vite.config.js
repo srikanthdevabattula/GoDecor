@@ -5,13 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
 	plugins: [react()],
 	server: {
-		port: 4001,
+		port: 4003,
 		proxy: {
-			"/api": {
-				target: "https://go-decor.vercel.app/api/v1",
-				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/api/, ""),
-			},
+			"/api": 'http://localhost:4003'
 		},
 	},
 });

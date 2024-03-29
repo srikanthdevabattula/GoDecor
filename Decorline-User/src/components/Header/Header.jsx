@@ -5,11 +5,12 @@ import { BsList } from "react-icons/bs";
 import { FiShoppingCart } from "react-icons/fi";
 import { useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
 const Header = () => {
 	const [navbar,setnavbar]=useState(false)
 	return (
 		<header className="w-full h-[80px] sm:h-[auto] p-4 px-[5%] sm:px-[3%] flex sm:flex-col items-center justify-center">
-			<nav className="flex items-center justify-center  space-x-[200px] lg:space-x-[100px] md:space-x-[50px] sm:space-x-3 sm:justify-between">
+			<nav className="flex items-center justify-center  space-x-[170px] lg:space-x-[80px] md:space-x-[40px] sm:space-x-3 sm:justify-between">
 				
 				<Link to='/'><div className="flex items-center space-x-2 sm:space-x-1"><img src={logo} alt="" className="w-[34px] h-[34px] lg:w-[27px] lg:h-[27px] md:h-[23px] md:w-[23px] sm:w-[15px] sm:h-[15px]" />
 				<h1 className="font-DMSerif text-[#292F36] text-[40px] lg:text-[30px] md:text-[25px] sm:text-[14px]">GoDecor</h1>
@@ -33,7 +34,8 @@ const Header = () => {
 					<input type="search" name="" id="" className="border-[1px] rounded-[10px] outline-none p-1 text-[13px]"/></div>
 					<CiSearch /></div>
 				<div className="flex space-x-4">
-				<Link to='/wishlist'><AiFillHeart className="text-[23px] md:text-[20px] sm:text-[15px] p-[3px] md:p-[2px] border-[1px] rounded-[100px] text-[red]"/></Link>
+				<Link to='/wishlist'><AiFillHeart className="text-[30px] md:text-[25px] sm:text-[17px] p-[3px] md:p-[2px] border-[1px] rounded-[100px] text-[red]"/></Link>
+				<Link to='/login'><CgProfile className="text-[30px] md:text-[25px] sm:text-[17px] p-[3px] md:p-[2px] border-[1px] rounded-[100px] text-[blue]"/></Link>
 				<Link to='/cart'><FiShoppingCart  className="text-[30px] md:text-[25px] sm:text-[17px]"/></Link>
 				<BsList  onClick={()=>setnavbar(!navbar)} className="sm:flex hidden"/>
 					</div></nav>

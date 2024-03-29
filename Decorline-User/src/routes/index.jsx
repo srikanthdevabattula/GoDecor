@@ -38,10 +38,7 @@ const Routers = () => {
 	return (
 		<Routes>
 			
-			<Route 
-			path="/login"
-			element={<Login/>}
-			/>
+			
 			
 			<Route
 				path="/"
@@ -51,6 +48,10 @@ const Routers = () => {
 					path="/"
 					element={<Home />}
 				/>
+				<Route 
+			path="/login"
+			element={<Login/>}
+			/>
 				<Route
 					path="/contactUs"
 					element={<ContactUs />}
