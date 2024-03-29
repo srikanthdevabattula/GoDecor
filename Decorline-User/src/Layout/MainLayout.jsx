@@ -29,10 +29,10 @@ const MainLayout = () => {
         console.log("Updated products:", allProducts);
     }, [allProducts]);
   
-    const token = Cookies.get('token');
-    if (!token) {
-        return <Navigate to='/login' />;
-    }
+    // const token = Cookies.get('token');
+    // if (!token) {
+    //     return <Navigate to='/login' />;
+    // }
 	
 	return (
 		<main>
