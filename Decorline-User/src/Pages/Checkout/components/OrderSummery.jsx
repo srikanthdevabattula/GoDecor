@@ -14,7 +14,7 @@ const OrderSummery = () => {
         <div className='p-4 space-y-2 text-[#191C1F] font-Roboto'>
             {cartItems.map((item,index)=>(
                     <div className='flex space-x-2 items-center'>
-                        <img src={item.image} alt="" className='w-[100px] lg:w-[80px] rounded-[8px]'/>
+                        <img src={item.images} alt="" className='w-[100px] h-[100px] lg:w-[80px] lg:h-[80px] rounded-[8px]'/>
                         <div>
                             <h5 className='text-[14px]'>{item.name}</h5>
                             <p className='text-[#5F6C72] font-Roboto text-[14px]'>{item.quantity} X <span className='text-[#2DA5F3] font-semibold'>₹{item.price}</span></p>
