@@ -44,7 +44,7 @@ const Routers = () => {
 			
 			
 			<Route
-				path="/"
+				
 				element={<MainLayout></MainLayout>}
 			>
 				<Route
