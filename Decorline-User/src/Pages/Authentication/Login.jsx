@@ -1,105 +1,118 @@
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from '../../assets/logo.png';
 import loginpage from '../../assets/login.png';
 import google from '../../assets/google 2.png';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'; // Import GoogleOAuthProvider and GoogleLogin
-import { jwtDecode } from "jwt-decode";
-
-
-
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-
-
-
-
 const Login = () => {
-    const history = useNavigate();
-    const [showOtp, setShowOtp] = useState(false);
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [otp, setOtp] = useState('');
-    const [userLogin, setLogin] = useState(true);
-    const [error, setError] = useState('');
-    const token = Cookies.get('token');
-    if (token) {
-        return <Navigate to='/' />;
+  const history = useNavigate();
+  const [showOtp, setShowOtp] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [otpNumber,setOtpNumber]=useState('')
+  const [otp, setOtp] = useState('');
+  const [userLogin, setLogin] = useState(true);
+  const [error, setError] = useState('');
+  const token = Cookies.get('token');
+
+  if (token) {
+    return <Navigate to='/' />;
+  }
+
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    console.log(credentialResponse);
+    const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+    console.log(credentialResponseDecoded);
+    
+    try {
+      const { sub: googleId, email } = credentialResponseDecoded;
+      console.log('Google ID:', googleId);
+      console.log('Email:', email);
+
+      const response = await axios.post('https://go-decor.vercel.app/api/v1/loginUser', {
+        role: 'user',
+        googleId: googleId,
+        email: email,
+      });
+
+      Cookies.set('token', response.data.data.token, { expires: 7 });
+      history('/');
+    } catch (error) {
+      console.error('Authentication failed:', error);
     }
- 
-    const handleGoogleLoginSuccess = async (credentialResponse) => {
-      console.log(credentialResponse)
-        const credentialResponseDecoded=jwtDecode(
-            credentialResponse.credential
-        );
-        console.log(credentialResponseDecoded)
-        try {
-            const { sub: googleId, email } = credentialResponseDecoded; // Extract Google ID and email from the response object
-            console.log('Google ID:', googleId);
-            console.log('Email:', email);
+  };
 
-          // Send Google credentials to backend for authentication
-          const response = await axios.post('https://go-decor.vercel.app/api/v1/loginUser', {
-            "role": 'user',
-            "googleId":googleId,
-            "email": email
-          });
+  const handleError = () => {
+    console.log('Login Failed');
+  };
 
-          Cookies.set('token', response.data.data.token, { expires: 7 }); // Token expires in 7 days
+  const handleToggleOtp = () => {
+    setShowOtp(!showOtp);
+  };
 
+  const handleRegistrationSubmit = async (e) => {
+    e.preventDefault();
+    // Add your registration logic here
+  };
 
-          history('/')
-          // Handle authentication success
-          // console.log('Authentication successful:', response.data.data.token);
-        } catch (error) {
-          // Handle authentication failure
-          console.error('Authentication failed:', error);
-        }
-      };
-    const handleError = () => {
-      console.log('Login Failed');
-    };
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setOtpNumber(phoneNumber)
+    try {
+      const response = await axios.post('https://go-decor.vercel.app/api/v1/sendOtp', {
+        phoneNumber,
+        role: 'user',
+      });
 
-  //   const handleGoogleLogin = async () => {
-  //     try {
-  //         // Assuming your backend endpoint for Google OAuth is correct and returns user data
-  //         const response = await axios.get('https://go-decor.vercel.app/api/v1/google');
-  //         const { email, id } = response.data;
-  //         await axios.post('https://go-decor.vercel.app/api/v1/loginUser', { googleId:id, email, role: 'user' });
-  //         // Assuming successful login, redirect to home page
-  //         history.push('/');
-  //     } catch (error) {
-  //         console.error('Error while Google sign-in:', error);
-  //         setError('Error occurred during Google sign-in');
-  //     }
-  // };
+      if (response.status === 200) {
+        showMessage('OTP sent successfully!');
+        // Redirect to OTP verification page or continue with OTP input
+      } else {
+        showMessage('Failed to send OTP. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      showMessage('An error occurred. Please try again later.');
+    }
+  };
 
-//   const handleGoogleLogin = async () => {
-//     // Redirect the user to the backend route responsible for initiating OAuth flow
-//     window.location.href = 'https://go-decor.vercel.app/api/v1/google';
-// };
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://go-decor.vercel.app/api/v1/verifyOtp', {
+        phoneNumber,
+        role: 'user',
+        otp,
+      });
+      
+      if (response.status === 200) {
+        Cookies.set('token', response.data.data.token, { expires: 7 });
+        history('/');
+        showMessage('OTP verified successfully!');
+        // Handle successful OTP verification, e.g., login the user
+      } else {
+        showMessage('Invalid OTP. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      showMessage('An error occurred. Please try again later.');
+    }
+  };
 
-  
-    const handleToggleOtp = () => {
-      setShowOtp(!showOtp);
-    };
-  
-    const handleLoginSubmit = async (e) => {
-      e.preventDefault();
-      // Add your login logic here
-    };
-  
-    const handleRegistrationSubmit = async (e) => {
-      e.preventDefault();
-      // Add your registration logic here
-    };
-  
-    return (
-      <GoogleOAuthProvider clientId="262341592503-cnh121vfaqm6k2cja7vaifecoiiv73lg.apps.googleusercontent.com"> 
-     
-     <div className='p-[50px] sm:p-[10px]'>
+  const showMessage = (message) => {
+    setError(message);
+    setTimeout(() => {
+      setError('');
+    }, 5000);
+  };
+
+  return (
+    <GoogleOAuthProvider clientId="262341592503-cnh121vfaqm6k2cja7vaifecoiiv73lg.apps.googleusercontent.com">
+      <div className='p-[50px] sm:p-[10px]'>
         <div className='flex items-center space-x-2'>
           {/* <img src={logo} alt="Logo" /> */}
           {/* <h1 className='text-[#292F36] font-DMSerif text-[40px] md:text-[30px] sm:text-[25px]'>GoDecor</h1> */}
@@ -113,75 +126,58 @@ const Login = () => {
             {userLogin ? (
               <div>
                 <h3 className='text-[25px] md:text-[20px] sm:text-[15px] font-poppins font-semibold border-b-[1px] border-[#62B179] w-[180px] mt-4'>LOGIN/SIGNUP</h3>
-                {/* <div className='flex items-center justify-center my-[30px]'>
-                            <button onClick={e=>handleGoogleLogin()} className='border-[1px] p-2 flex items-center'>
-                                <img src={google} alt="Google Icon" className='w-5 h-5 mr-2' /> Google sign in
-                            </button>
-                        </div> */}
-
-
-
-
-                        <div className='flex items-center justify-center my-[30px]'>
-
-                        <GoogleLogin
-                            onSuccess={handleGoogleLoginSuccess}
-                            onError={handleError}
-                                      />
-
-                                      </div>
-
-
-
-              <div className='text-[17px] md:text-[14px] sm:text-[12px] text-[#A3A3A3] font-medium font-Roboto text-center my-4'><h1>-OR-</h1></div>
-              <div className='px-[5%] sm:px-[2%] '>
-                <form onSubmit={handleLoginSubmit} className='space-y-4 text-[17px] md:text-[14px] sm:text-[12px]'>
-                  <div className='flex items-center justify-center w-[100%] border-[#E5E5E5] border-[1px] rounded-[8px] p-3'>
-                    <h3 className='w-[10%]'>+91</h3>
-                    <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className='w-[65%] outline-none' placeholder='Enter Phone Number' required />
-                    <h3 className='w-[25%] text-[#4F90F0] font-poppins text-[14px]  md:text-[12px]'>Send OTP</h3>
-                  </div>
-                  <div className='flex items-center border-[1px] rounded-[8px] p-3 '>
-                    <input type={showOtp ? 'text' : 'password'} value={otp} onChange={(e) => setOtp(e.target.value)} id='otp' name='otp' className='outline-none  border-0 w-[90%]' placeholder='Enter OTP' required />
-                    {showOtp ? (
-                      <IoEyeOffOutline onClick={handleToggleOtp} />
-                    ) : (
-                      <IoEyeOutline onClick={handleToggleOtp} />
-                    )}
-                  </div>
-                  <p className='text-[#737373] font-poppins text-[14px] md:text-[12px] sm:text-[10px] px-2'>OTP has been sent to your mobile no</p>
-                  <button type="submit" className='text-[white] w-[100%] bg-[#023020] font-poppins font-medium rounded-[8px] border-[1px] border-[#E5E5E5] py-3'>Continue</button>
-                  {error && <p className="text-red-500">{error}</p>}
-                </form>
+                <div className='flex items-center justify-center my-[30px]'>
+                  <GoogleLogin
+                    onSuccess={handleGoogleLoginSuccess}
+                    onError={handleError}
+                  />
+                </div>
+                <div className='text-[17px] md:text-[14px] sm:text-[12px] text-[#A3A3A3] font-medium font-Roboto text-center my-4'><h1>-OR-</h1></div>
+                <div className='px-[5%] sm:px-[2%] '>
+                  <form onSubmit={handleVerifyOtp} className='space-y-4 text-[17px] md:text-[14px] sm:text-[12px]'>
+                    <div className='flex items-center justify-center w-[100%] border-[#E5E5E5] border-[1px] rounded-[8px] p-3'>
+                      <h3 className='w-[10%]'>+91</h3>
+                      <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className='w-[65%] outline-none' placeholder='Enter Phone Number' required />
+                      <button onClick={handleLoginSubmit} className='w-[25%] text-[#4F90F0] font-poppins text-[14px]  md:text-[12px]'>Send OTP</button>
+                    </div>
+                    <div className='flex items-center border-[1px] rounded-[8px] p-3 '>
+                      <input type={showOtp ? 'text' : 'password'} value={otp} onChange={(e) => setOtp(e.target.value)} id='otp' name='otp' className='outline-none  border-0 w-[90%]' placeholder='Enter OTP' required />
+                      {showOtp ? (
+                        <IoEyeOffOutline onClick={handleToggleOtp} />
+                      ) : (
+                        <IoEyeOutline onClick={handleToggleOtp} />
+                      )}
+                    </div>
+                   {otpNumber&& <p className='text-[#737373] font-poppins text-[14px] md:text-[12px] sm:text-[10px] px-2'>OTP has been sent to your mobile no {otpNumber}</p>}
+                    <button type="submit" className='text-[white] w-[100%] bg-[#023020] font-poppins font-medium rounded-[8px] border-[1px] border-[#E5E5E5] py-3'>Continue</button>
+                    {error && <p className="text-red-500">{error}</p>}
+                  </form>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className='space-y-5'>  
+            ) : (
+              <div className='space-y-5'>
                 <h3 className='text-[25px] md:text-[20px] sm:text-[20px] font-poppins font-semibold border-b-[1px] border-[#62B179] w-[100px] md:w-[60px] mt-4'>Hello</h3>
-
                 <div>
-                    <h1 className='text-[#171717] text-[24px] md:text-[20px] sm:text-[15px] font-poppins font-semibold'>Welcome</h1>
-                    <p className='font-poppins text-[20px] md:text-[16px] sm:text-[14px] text-[#171717]'>Enter your name to continue</p>
+                  <h1 className='text-[#171717] text-[24px] md:text-[20px] sm:text-[15px] font-poppins font-semibold'>Welcome</h1>
+                  <p className='font-poppins text-[20px] md:text-[16px] sm:text-[14px] text-[#171717]'>Enter your name to continue</p>
                 </div>
                 <div>
-                    <form action="" onSubmit={handleRegistrationSubmit} className='space-y-4'>
-                        <div>
-                        <h3 className='text-[#737373] font-poppins text-[16px] md:text-[13px] sm:text-[11px]'>Name</h3>
-                        <input type="text" name="" id=""  placeholder='Enter your name' className='border-[1px] border-[#E5E5E5] rounded-[8px] w-[100%] p-[16px] md:p-[10px]'/>
-                        </div>
-                        <div>
-                        <button type="submit" className='text-[white] w-[100%] bg-[#023020] font-poppins font-medium rounded-[8px] border-[1px] border-[#E5E5E5] py-3'>Continue</button>
-                 
-                        </div>
-                    </form>
+                  <form action="" onSubmit={handleRegistrationSubmit} className='space-y-4'>
+                    <div>
+                      <h3 className='text-[#737373] font-poppins text-[16px] md:text-[13px] sm:text-[11px]'>Name</h3>
+                      <input type="text" name="" id="" placeholder='Enter your name' className='border-[1px] border-[#E5E5E5] rounded-[8px] w-[100%] p-[16px] md:p-[10px]' />
+                    </div>
+                    <div>
+                      <button type="submit" className='text-[white] w-[100%] bg-[#023020] font-poppins font-medium rounded-[8px] border-[1px] border-[#E5E5E5] py-3'>Continue</button>
+                    </div>
+                  </form>
                 </div>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </GoogleOAuthProvider>
-  
   );
 };
 
