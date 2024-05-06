@@ -1,10 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { totalSelector } from '../../../redux/reducers/productReducer'
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie';
+const CartTotal = ({total}) => {
+    const [cartItems, setCartItems] = useState([]);
+   
 
-const CartTotal = () => {
-    const total =useSelector(totalSelector)
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
+
+  
+
+    const fetchCartItems = async () => {
+        try {
+            // Retrieve authorization token from cookies
+            const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+            const response = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            console.log(data.data[0].cart);
+            setCartItems(data.data[0].cart);
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    };
+
+   
   return (
     <div className='space-y-3'>
         <div className='border-[1px] p-6 lg:p-4 rounded-[8px] font-Roboto'>

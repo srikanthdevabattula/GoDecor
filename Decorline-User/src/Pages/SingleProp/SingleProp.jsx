@@ -8,27 +8,75 @@ import { IoIosStarHalf } from "react-icons/io";
 import { IoHeartSharp } from "react-icons/io5";
 import { IoHeartOutline } from "react-icons/io5";
 import arrow from '../../assets/products/arrow.png';
-
+import Cookies from 'js-cookie';
 const ProductDetails = () => {
    
     const { _id } = useParams();
     const dispatch = useDispatch();
     const products = useSelector(productsSelector);
     const product = products.find(product => product._id === _id);
-    const cart = useSelector(cartSelector);
+    const [cart,setCart] =useState([])
     const [productcategory, setProductCategory] = useState(null);
+const [wishlist,setWishlist]=useState(false)
 
+    
     useEffect(() => {
-        if (product) {
-            setProductCategory(product.category);
-        }
-    }, [product]);
+        const fetchData = async () => {
+            try {
+                if (product) {
+                    setProductCategory(product.category);
+                    const token = Cookies.get('token');
+
+                    // Fetch user's favorite product list
+                    const favoriteProductsResponse = await fetch('https://go-decor.vercel.app/api/v1/favoriteProduct', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (favoriteProductsResponse.ok) {
+                        const favoriteProductsData = await favoriteProductsResponse.json();
+                        console.log('Favorite products data:', favoriteProductsData.data);
+
+                        // Check if the current product is in the user's favorite products
+                        const isProductInWishlist = favoriteProductsData.data.includes(_id);
+                        setWishlist(isProductInWishlist);
+                    } else {
+                        console.error('Failed to fetch favorite products:', favoriteProductsResponse.statusText);
+                        // Handle error response
+                    }
+
+                    // Fetch user's cart
+                    const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (cartResponse.ok) {
+                        const cartData = await cartResponse.json();
+                        console.log('Response from https://go-decor.vercel.app/api/v1/cart:', cartData.data[0].cart);
+                        setCart(cartData.data[0].cart);
+                    } else {
+                        console.error('Failed to fetch cart:', cartResponse.statusText);
+                        // Handle error response
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+                // Handle network error
+            }
+        };
+
+        fetchData(); // Call the function
+    }, [_id]);
+    
 
     if (!product) {
         return <div>Product not found</div>;
     }
 
-    const { name, price, description, images, rating, category,wishlist } = product;
+    const { name, price, description, images, rating, category } = product;
 
 
     // const productcategory = useState(category);
@@ -76,23 +124,169 @@ const ProductDetails = () => {
     };
 
 
-    const handleAddToCart = (id) => {
-        dispatch(actions.cart(id));
-        dispatch(actions.total());
-      };
+    const handleAddToCart = async (productId) => {
+        try {
+            const token = Cookies.get('token');
+            const response = await fetch('https://go-decor.vercel.app/api/v1/cart/new', {
+                method: 'POST',
+              
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
+            });
+    
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log('Product added to cart successfully:', responseData);
+                // Perform any necessary actions after successful addition to cart
+            } else {
+                console.error('Failed to add product to cart:', response.statusText);
+                // Handle error response
+            }
+    
+            // Regardless of the response status, log the response from https://go-decor.vercel.app/api/v1/cart
+            const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            if (cartResponse.ok) {
+                const cartData = await cartResponse.json();
+                console.log('Response from https://go-decor.vercel.app/api/v1/cart:', cartData.data[0].cart);
+                setCart(cartData.data[0].cart)
+                
+            } else {
+                console.error('Failed to fetch cart:', cartResponse.statusText);
+                // Handle error response
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error.message);
+            // Handle network error
+        }
+    };
+    
       
-      const handleIncrement=(id)=>{
-        
-        dispatch(actions.increaseQuantity(id))
-        dispatch(actions.total())
-      }
-      const handleDecrement=(id)=>{
-        dispatch(actions.decreaseQuantity(id))
-        dispatch(actions.total())
-      }
+      const handleIncrement=async (productId) => {
+        try {
+            const token = Cookies.get('token');
+            const response = await fetch(`https://go-decor.vercel.app/api/v1/cart/${productId}/increaseProductQuantity`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+               
+            });
+    
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log('Product added to cart successfully:', responseData);
+                // Perform any necessary actions after successful addition to cart
+            } else {
+                console.error('Failed to add product to cart:', response.statusText);
+                // Handle error response
+            }
+    
+            // Regardless of the response status, log the response from https://go-decor.vercel.app/api/v1/cart
+            const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            if (cartResponse.ok) {
+                const cartData = await cartResponse.json();
+                console.log('Response from https://go-decor.vercel.app/api/v1/cart:', cartData.data[0].cart);
+                setCart(cartData.data[0].cart)
+                
+            } else {
+                console.error('Failed to fetch cart:', cartResponse.statusText);
+                // Handle error response
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error.message);
+            // Handle network error
+        }
+    };
+      const handleDecrement=async (productId) => {
+        try {
+            const token = Cookies.get('token');
+            const response = await fetch(`https://go-decor.vercel.app/api/v1/cart/${productId}/decreaseProductQuantity`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+               
+            });
+    
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log('Product added to cart successfully:', responseData);
+                // Perform any necessary actions after successful addition to cart
+            } else {
+                console.error('Failed to add product to cart:', response.statusText);
+                // Handle error response
+            }
+    
+            // Regardless of the response status, log the response from https://go-decor.vercel.app/api/v1/cart
+            const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            if (cartResponse.ok) {
+                const cartData = await cartResponse.json();
+                console.log('Response from https://go-decor.vercel.app/api/v1/cart:', cartData.data[0].cart);
+                setCart(cartData.data[0].cart)
+                
+            } else {
+                console.error('Failed to fetch cart:', cartResponse.statusText);
+                // Handle error response
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error.message);
+            // Handle network error
+        }
+    };
+    const handleWishlist = async (productId) => {
+        try {
+            const token = Cookies.get('token');
+            const url = wishlist
+                ? `https://go-decor.vercel.app/api/v1/favoriteProduct/removeProduct/${productId}`
+                : 'https://go-decor.vercel.app/api/v1/favoriteProduct/add';
+    
+            const method = wishlist ? 'DELETE' : 'POST';
+    
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: wishlist ? null : JSON.stringify({ productId })
+            });
+    
+            if (response.ok) {
+                console.log('Product', wishlist ? 'removed from' : 'added to', 'wishlist successfully');
+                setWishlist(!wishlist); // Toggle the wishlist state
+            } else {
+                console.error('Failed to', wishlist ? 'remove from' : 'add to', 'wishlist:', response.statusText);
+                // Handle error response
+            }
+        } catch (error) {
+            console.error('Error handling wishlist:', error.message);
+            // Handle network error
+        }
+    };
+    
   
-      const quantityInCart = cart.find(item => item._id === product._id)?.quantity || 0;
-
+      const quantityInCart = cart.find(item => item.productId._id === product._id)?.quantity || 0;
+console.log(quantityInCart)
     return (
         <div className='space-y-[40px]'>
             <div className='h-[250px] sm:h-[180px] bg-cover bg-center flex items-end justify-center' style={{ backgroundImage: `url(${sprop})` }}>
@@ -105,13 +299,13 @@ const ProductDetails = () => {
                 <h1 className='text-[#292F36] font-DMSerif text-[50px] lg:text-[40px] md:text-[30px] sm:text-[20px] pl-5'>Prop Detail</h1>
                 <div className='border-[1px] border-[#E7E7E7] rounded-[62px] md:rounded-[40px] sm:rounded-[20px] p-8 sm:p-4 flex sm:flex-col gap-10 sm:gap-5 w-[100%] '>
                     <div className='w-[50%] sm:w-[100%]'>
-                    <div onClick={()=>dispatch(actions.toggleWishlist(product.id))} className='absolute ml-6 mt-6 sm:mt-4 bg-[white] p-2 rounded-[100px] '>{wishlist? <IoHeartSharp className='text-[red] text-[30px] md:text-[22px] sm:text-[17px]'/>:<IoHeartOutline className='text-[30px] md:text-[22px] sm:text-[17px]'/>}</div> 
+                    <div  onClick={()=>handleWishlist(product._id)} className='absolute ml-6 mt-6 sm:mt-4 bg-[white] p-2 rounded-[100px] '>{wishlist? <IoHeartSharp className='text-[red] text-[30px] md:text-[22px] sm:text-[17px]'/>:<IoHeartOutline className='text-[30px] md:text-[22px] sm:text-[17px]'/>}</div> 
                         <img src={images[0]} alt={name} className='h-[458px] lg:h-[410px] md:h-[340px] sm:h-[230px] esm:h-[200px] w-[100%] sm:w-[240px] rounded-[18px]' />
                       
                     </div>
                     <div className='w-[50%] sm:w-[100%] space-y-6 lg:space-y-4 md:space-y-2'>
                         <h2 className='text-[#292F36] font-DMSerif text-[27px] lg:text-[23px] md:text-[18px]'>{name}</h2>
-                        <p className='text-[22px] lg:text-[20px] md:text-[17px] sm:text-[14px] font-Jost text-[#4D5053]'>Description: {description}</p>
+                        <p className='text-[22px]  lg:text-[20px] md:text-[17px] sm:text-[14px] font-Jost text-[#4D5053] '>Description: {description}</p>
                         <div className='space-y-1'>
                             <p className='flex'>{renderStars()}</p>
                             <p className='text-[#AAAAAA] font-Jost text-[12px]'>93 Reviews ⮞</p>
