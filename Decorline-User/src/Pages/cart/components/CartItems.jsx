@@ -25,8 +25,10 @@ const CartItems = ({setTotal}) => {
               }
           });
           const data = await response.json();
-          console.log(data.data[0].cart)
+          console.log(data.data[0])
           setCartItems(data.data[0].cart);
+        
+         
       } catch (error) {
           console.error('Error fetching cart items:', error);
       }
@@ -130,10 +132,51 @@ const calculateTotal = () => {
   });
   setTotal(newTotal);
 };
-      const handleDelete=(id)=>{
-        dispatch(actions.deleteItem(id))
-        dispatch(actions.total())
-      }
+      
+        const handleDelete=async (productId) => {
+          try {
+              const token = Cookies.get('token');
+              const response = await fetch(`https://go-decor.vercel.app/api/v1/cart/${productId}`, {
+                  method: 'DELETE',
+                  headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json'
+                  },
+                 
+              });
+        
+              if (response.ok) {
+                  const responseData = await response.json();
+                  console.log('Product added to cart successfully:', responseData);
+                  // Perform any necessary actions after successful addition to cart
+              } else {
+                  console.error('Failed to add product to cart:', response.statusText);
+                  // Handle error response
+              }
+        
+              // Regardless of the response status, log the response from https://go-decor.vercel.app/api/v1/cart
+              const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                  headers: {
+                      'Authorization': `Bearer ${token}`
+                  }
+              });
+        
+              if (cartResponse.ok) {
+                  const cartData = await cartResponse.json();
+                  console.log('Response from https://go-decor.vercel.app/api/v1/cart:', cartData.data[0].cart);
+                  setCartItems(cartData.data[0].cart);
+                
+                  
+              } else {
+                  console.error('Failed to fetch cart:', cartResponse.statusText);
+                  // Handle error response
+              }
+             
+          } catch (error) {
+              console.error('Error adding product to cart:', error.message);
+              // Handle network error
+          }
+        };
   return (
     <div>
         <div className='border-[1px] rounded-[8px]'>

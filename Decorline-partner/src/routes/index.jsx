@@ -14,6 +14,7 @@ import DesignsBookings from "../Pages/Bookings/Designs/Designs";
 import Earnings from "../Pages/Earnings/Earnings";
 import Settings from "../Pages/Settings/Settings";
 import Chat from "../Pages/Chat/Chat";
+import ImageUpload from "../Pages/imageUpload/ImageUpload";
 
 // export const router = createBrowserRouter([
 // 	{
@@ -88,6 +89,10 @@ const Routers = () => {
 					<Route
 					path="/Settings"
 					element={<Settings />}
+				/>
+					<Route
+					path="/Imgup"
+					element={<ImageUpload />}
 				/>
 			
 			</Route>
