@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ProductsActions } from '../../../redux/reducers/Products';
 import { CiCircleRemove } from "react-icons/ci";
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const AddProductModal = () => {
   const dispatch = useDispatch();
@@ -18,72 +19,23 @@ const AddProductModal = () => {
     images: []
   });
 
-  useEffect(() => {
-    if (!files || files.length === 0) return;
+  // useEffect(() => {
+  //   if (!files || files.length === 0) return;
 
-    const objectUrls = files.map(file => URL.createObjectURL(file));
-    setPreviews(objectUrls);
+  //   const objectUrls = files.map(file => URL.createObjectURL(file));
+  //   setPreviews(objectUrls);
 
-    // Clean up object URLs when component unmounts or files change
-    return () => {
-      objectUrls.forEach(URL.revokeObjectURL);
-    };
-  }, [files]);
+  //   // Clean up object URLs when component unmounts or files change
+  //   return () => {
+  //     objectUrls.forEach(URL.revokeObjectURL);
+  //   };
+  // }, [files]);
 
-  const handleFileChange = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFiles = Array.from(e.target.files);
-      setFiles([...files, ...selectedFiles]);
+ 
 
-      // Generate image URLs for each file
-      const imageUrls = await Promise.all(selectedFiles.map(uploadImage));
-      
-      // Update images array in formData with the generated URLs
-      setFormData(prevState => ({
-        ...prevState,
-        images: [...prevState.images, ...imageUrls]
-      }));
-    }
-  };
 
-  const uploadImage = async (file) => {
-    try {
-      const response = await fetch('https://go-decor.vercel.app/api/v1/storage/getUrl', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          type: 'productId',
-          extension: file.name.split('.').pop()
-        })
-      });
 
-      if (response.ok) {
-        const { url } = await response.json();
-        return url;
-      } else {
-        throw new Error('Failed to generate image URL');
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      // Handle error (maybe show an error message to the user)
-      return null;
-    }
-  };
-
-  const removeFile = (indexToRemove) => {
-    const updatedFiles = files.filter((_, index) => index !== indexToRemove);
-    setFiles(updatedFiles);
-  
-    const updatedImages = formData.images.filter((_, index) => index !== indexToRemove);
-    setFormData(prevState => ({
-      ...prevState,
-      images: updatedImages
-    }));
-  
-    setPreviews(previews.filter((_, index) => index !== indexToRemove));
-  };
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -142,27 +94,80 @@ const AddProductModal = () => {
     }
   };
 
+
+  const [image, setImage] = useState(null);
+ 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onloadend = async () => {
+        const base64data = reader.result.split(',')[1];
+        const response = await axios.post('https://go-decor.vercel.app/api/v1/storage/getUrl', {
+          image: base64data,
+          extension: "png",
+          type: "productId"
+        });
+        
+        // Assuming formData is managed via useState
+        const updatedFormData = { ...formData };
+        
+        // Add URL to the images array
+        updatedFormData.images.push(response.data.data.downloadUrl);
+  
+        // Update formData state
+        setFormData(updatedFormData);
+        console.log(formData)
+      };
+    } catch (error) {
+      setError('Error uploading image. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeFile = (indexToRemove) => {
+    // Create a copy of formData
+    const updatedFormData = { ...formData };
+    
+    // Remove the image URL at the specified index
+    updatedFormData.images.splice(indexToRemove, 1);
+    
+    // Update formData state
+    setFormData(updatedFormData);
+  };
+  
+  
+
   return (
     <div className="modal-container font-poppins">
       <div className="modal scrollbar-hide">
         <div className="modal-content">
           <span className="close" onClick={() => dispatch(ProductsActions.setAddproduct(false))}>&times;</span>
           <h2 className='text-[13px] font-medium'>Add Product</h2>
+          <form onSubmit={handleFormSubmit}>
+        <input type="file" onChange={handleImageChange} accept="image/*" />
+        <button type="submit">Upload</button>
+      </form>
+          
           <form onSubmit={handleSubmit}>
             <div className='flex flex-wrap space-x-2'>
-              <div className=' w-[100%]  '>
-                <input
-                  type="file"
-                  accept="image/jpg, image/jpeg, image/png"
-                  multiple
-                  onChange={handleFileChange}
-                  className='mt-3 w-[100%] outline-none text-[9px]  text-transparent bg-transparent'
-                />
-              </div>
-              {previews.map((pic, index) => (
+             
+              {formData.images.map((pic, index) => (
                 <div key={index} className=" X">
                   <div className='text-center my-2'>
-                    <img src={pic} className="w-[70px] sm:w-[50px]" alt={`Preview ${index}`} />
+                    <img src={pic} className="w-[70px] h-[70px] sm:w-[50px] sm:h-[50px]" alt={`Preview ${index}`} />
                     <button onClick={() => removeFile(index)}><CiCircleRemove /></button>
                   </div>
                 </div>

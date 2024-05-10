@@ -1,23 +1,56 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { cartSelector, totalSelector } from '../../../redux/reducers/productReducer'
 import { Link } from 'react-router-dom'
-
+import Cookies from 'js-cookie';
 const OrderSummery = () => {
-    const total =useSelector(totalSelector)
-    const cartItems=useSelector(cartSelector)
-    
+    const [cartItems, setCartItems] = useState([]);
+const [total,setTotal]=useState(0)
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
+  
+    useEffect(() => {
+      calculateTotal();
+  }, [cartItems]);
+  
+    const fetchCartItems = async () => {
+        try {
+            // Retrieve authorization token from cookies
+            const token = Cookies.get('token');
+              const response = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            console.log(data.data[0].cart)
+            setCartItems(data.data[0].cart);
+          
+           
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    };
+
+    const calculateTotal = () => {
+        let newTotal = 0;
+        cartItems.forEach(item => {
+            newTotal += item.productId.price * item.quantity;
+        });
+        setTotal(newTotal);
+      };
   return (
     <div className=' border-[1px] rounded-[4px]'>
         <h1 className='text-[#191C1F] font-semibold font-Roboto p-4'>Order Summery</h1>
 
         <div className='p-4 space-y-2 text-[#191C1F] font-Roboto'>
             {cartItems.map((item,index)=>(
-                    <div className='flex space-x-2 items-center'>
-                        <img src={item.images} alt="" className='w-[100px] h-[100px] lg:w-[80px] lg:h-[80px] rounded-[8px]'/>
+                    <div key={index} className='flex space-x-2 items-center'>
+                        <img src={item.productId.images[0]} alt="" className='w-[100px] h-[100px] lg:w-[80px] lg:h-[80px] rounded-[8px]'/>
                         <div>
-                            <h5 className='text-[14px]'>{item.name}</h5>
-                            <p className='text-[#5F6C72] font-Roboto text-[14px]'>{item.quantity} X <span className='text-[#2DA5F3] font-semibold'>₹{item.price}</span></p>
+                            <h5 className='text-[14px]'>{item.productId.name}</h5>
+                            <p className='text-[#5F6C72] font-Roboto text-[14px]'>{item.quantity} X <span className='text-[#2DA5F3] font-semibold'>₹{item.productId.price}</span></p>
                         </div>
                     </div>
                 ))
