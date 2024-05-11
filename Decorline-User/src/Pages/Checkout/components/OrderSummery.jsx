@@ -10,9 +10,9 @@ const [total,setTotal]=useState(0)
         fetchCartItems();
     }, []);
   
-    useEffect(() => {
-      calculateTotal();
-  }, [cartItems]);
+//     useEffect(() => {
+//       calculateTotal();
+//   }, [cartItems]);
   
     const fetchCartItems = async () => {
         try {
@@ -24,8 +24,9 @@ const [total,setTotal]=useState(0)
                 }
             });
             const data = await response.json();
-            console.log(data.data[0].cart)
+            
             setCartItems(data.data[0].cart);
+            setTotal(data.data[0].totalPrice)
           
            
         } catch (error) {
@@ -33,13 +34,13 @@ const [total,setTotal]=useState(0)
         }
     };
 
-    const calculateTotal = () => {
-        let newTotal = 0;
-        cartItems.forEach(item => {
-            newTotal += item.productId.price * item.quantity;
-        });
-        setTotal(newTotal);
-      };
+    // const calculateTotal = () => {
+    //     let newTotal = 0;
+    //     cartItems.forEach(item => {
+    //         newTotal += item.productId.price * item.quantity;
+    //     });
+    //     setTotal(newTotal);
+    //   };
   return (
     <div className=' border-[1px] rounded-[4px]'>
         <h1 className='text-[#191C1F] font-semibold font-Roboto p-4'>Order Summery</h1>
