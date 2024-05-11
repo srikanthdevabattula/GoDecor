@@ -9,11 +9,11 @@ const CartItems = ({setTotal}) => {
 
   useEffect(() => {
       fetchCartItems();
-  }, []);
+  }, [cartItems]);
 
-  useEffect(() => {
-    calculateTotal();
-}, [cartItems]);
+//   useEffect(() => {
+//     calculateTotal();
+// }, [cartItems]);
 
   const fetchCartItems = async () => {
       try {
@@ -25,9 +25,8 @@ const CartItems = ({setTotal}) => {
               }
           });
           const data = await response.json();
-          console.log(data.data[0])
-          setCartItems(data.data[0].cart);
-        
+         setCartItems(data.data[0].cart);
+          setTotal(data.data[0].totalPrice)
          
       } catch (error) {
           console.error('Error fetching cart items:', error);
@@ -125,13 +124,13 @@ const handleDecrement=async (productId) => {
       // Handle network error
   }
 };
-const calculateTotal = () => {
-  let newTotal = 0;
-  cartItems.forEach(item => {
-      newTotal += item.productId.price * item.quantity;
-  });
-  setTotal(newTotal);
-};
+// const calculateTotal = () => {
+//   let newTotal = 0;
+//   cartItems.forEach(item => {
+//       newTotal += item.productId.price * item.quantity;
+//   });
+//   setTotal(newTotal);
+// };
       
         const handleDelete=async (productId) => {
           try {
