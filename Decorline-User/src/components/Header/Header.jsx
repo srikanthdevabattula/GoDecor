@@ -63,10 +63,12 @@ const Header = () => {
                             <CgProfile className="text-[30px] md:text-[25px] sm:text-[17px] cursor-pointer" />
                             <div className="absolute  bg-white rounded-md shadow-md p-2 top-[30px] lg:top-[25px] md:top-[20px] sm:top-[15px] z-50 right-0 hidden group-hover:block">
                                <div
-                                    onClick={handleLogout}
-                                    className="block px-2 py-1 text-[#292F36] font-Jost text-sm cursor-pointer "
+                                    
+                                    className="block px-2 py-1 text-[#292F36] font-Jost text-sm cursor-pointer space-y-2 "
                                 >
-                                    Logout
+                                  <Link to='/profile' className="hover:text-[red] "> <p >Profile</p></Link> 
+                                   <p onClick={handleLogout} className="hover:text-[red] ">Logout</p> 
+                                   
                                 </div>
                             </div>
                         </div>

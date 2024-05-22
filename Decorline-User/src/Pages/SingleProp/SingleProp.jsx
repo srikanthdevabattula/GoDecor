@@ -283,6 +283,51 @@ const [wishlist,setWishlist]=useState(false)
             // Handle network error
         }
     };
+
+    const handleRemoveFromCart=async (productId) => {
+        try {
+            const token = Cookies.get('token');
+            const response = await fetch(`https://go-decor.vercel.app/api/v1/cart/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+               
+            });
+      
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log('Product added to cart successfully:', responseData);
+                // Perform any necessary actions after successful addition to cart
+            } else {
+                console.error('Failed to add product to cart:', response.statusText);
+                // Handle error response
+            }
+      
+            // Regardless of the response status, log the response from https://go-decor.vercel.app/api/v1/cart
+            const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+      
+            if (cartResponse.ok) {
+                const cartData = await cartResponse.json();
+                console.log('Response from https://go-decor.vercel.app/api/v1/cart:', cartData.data[0].cart);
+                setCart(cartData.data[0].cart);
+              
+                
+            } else {
+                console.error('Failed to fetch cart:', cartResponse.statusText);
+                // Handle error response
+            }
+           
+        } catch (error) {
+            console.error('Error adding product to cart:', error.message);
+            // Handle network error
+        }
+      };
     
   
       const quantityInCart = cart.find(item => item.productId._id === product._id)?.quantity || 0;
@@ -312,8 +357,10 @@ console.log(quantityInCart)
                         </div>
                         <p className='text-[32px] lg:text-[27px] md:text-[23px] font-DMSerif'>₹ {price}</p>
                         <div className='flex gap-5 sm:gap-3 items-center'>
-                            <button className='bg-[#023020] rounded-[15px] p-[14px_90px] lg:p-[12px_60px] md:p-[10px_40px] sm:p-[7px_30px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleAddToCart(product._id)}>ADD TO CART</button>
-                            <div className='space-x-3 sm:space-x-2 flex items-center '>
+                           {quantityInCart>=1?  <button className='bg-[#bb3f24] rounded-[15px] p-[14px_60px] lg:p-[12px_40px] md:p-[10px_20px] sm:p-[7px_10px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleRemoveFromCart(product._id)}>REMOVE FROM CART</button>
+                          : <button className='bg-[#023020] rounded-[15px] p-[14px_90px] lg:p-[12px_60px] md:p-[10px_40px] sm:p-[7px_30px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleAddToCart(product._id)}>ADD TO CART</button>
+                            }
+                             <div className='space-x-3 sm:space-x-2 flex items-center '>
                                 <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px]  font-extrabold text-[20px] rounded-[10px]' onClick={()=>handleDecrement(product._id)}>-</button>
                                 <p className='text-[24px] lg:text-[21px] sm:text-[16px] font-DMSerif text-[#121212]'>{quantityInCart}</p>
                                 <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px] font-extrabold text-[20px] rounded-[10px] ' onClick={()=>handleIncrement(product._id)}>+</button>

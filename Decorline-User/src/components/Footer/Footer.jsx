@@ -29,8 +29,8 @@ const Footer = () => {
 					<Link>About Us</Link>
 				<Link>Our Projects</Link>
 				<Link>Our Team</Link>
-				<Link>Contact Us</Link>
-				<Link>Services</Link>
+				<Link to='contactus'>Contact Us</Link>
+				<Link to='/services'>Services</Link>
 				<Link to='/faqs'>FAQ'S</Link>
 				</div>
 				
@@ -40,7 +40,7 @@ const Footer = () => {
 				<h1 className='text-[25px] lg:text-[20px] md:text-[17px] sm:text-[12px] text-[#292F36] font-DMSerif'>Services</h1>
 				
 				<div className='text-[22px] lg:text-[18px] md:text-[15px] sm:text-[9px] font-Jost text-[#4D5053] space-y-4 flex flex-col'>
-					<Link>kitchan</Link>
+					<Link>Kitchan</Link>
 				<Link>Our Living Area</Link>
 				<Link>Bathroom</Link>
 				<Link>Dinning Hall</Link>

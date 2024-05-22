@@ -15,6 +15,8 @@ const initialState={
     status: 'idle',
     error:null,
     isDataFetched: false, 
+    selectedAddress:null,
+    paymentType:'COD'
 }
 
 
@@ -102,6 +104,12 @@ const productSlice= createSlice({
               return total + item.price * item.quantity;
             }, 0);
           },
+          selectedAddress:(state,action)=>{
+            state.selectedAddress=action.payload;
+          },
+          selectPayment:(state,action)=>{
+            state.paymentType=action.payload;
+          }
 
     },
     extraReducers: (builder) => {
@@ -139,4 +147,5 @@ export const selectProductsStatus = state => state.productsReducer.status;
 export const selectProductsError = state => state.productsReducer.error;
 
 
-
+export const selectedAddressSelector=state=>state.productsReducer.selectedAddress;
+export const selectPaymentSelector=state=>state.productsReducer.paymentType
