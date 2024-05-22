@@ -13,14 +13,17 @@ import {
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import OrderSummery from './components/OrderSummery';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions, selectPaymentSelector } from '../../redux/reducers/productReducer';
 
 const Checkout = () => {
     const [countryid, setCountryid] = useState(0);
     const [stateid, setstateid] = useState(0);
-    const [paymentMethod, setPaymentMethod] = useState('cash');
-
+  const dispatch = useDispatch();
+    const paymentMethod = useSelector(selectPaymentSelector);
+  
     const handlePaymentMethodChange = (method) => {
-        setPaymentMethod(method);
+        dispatch(actions.selectPayment(method));
     };
 
     return (
@@ -37,7 +40,7 @@ const Checkout = () => {
                     <div className='billing'>
                         <h1 className=' font-Jost font-semibold text-[18px]'>Billing Information</h1>
                         <form action="" className='font-Jost  text-[#191C1F] text-[14px] space-y-[20px]'>
-                            <div className='space-y-[20px]'>
+                            {/* <div className='space-y-[20px]'>
                                 <div className='flex space-x-2 items-center '>
 
                                     <div className='w-[25%] space-y-2'>
@@ -111,11 +114,10 @@ const Checkout = () => {
                 </div>
             </div>
 
-            {/* <div className='flex items-center space-x-2'>
+             <div className='flex items-center space-x-2'>
                 <input type="checkbox" name="" id="" />
                 <p className='text-[14px] font-Roboto text-[#475156]'>Ship into different addres</p>
-            </div> */}
-            </div>
+            </div>  </div> */}
 
                               
                             <div className='paymentOptions text-[#191C1F] border-[1px] rounded-[4px]'>
@@ -127,7 +129,7 @@ const Checkout = () => {
                                     <div className='flex flex-col items-center space-y-2 px-[40px] lg:px-[30px] md:px-[20px] border-r-[1px]'>
                                         <img src={doller} alt="$" className='lg:w-[25px] md:w-[20px]' />
                                         <p>Cash on Delivery</p>
-                                        <input type="radio" name="paymentMethod" id="cash" checked={paymentMethod === 'cash'} onChange={() => handlePaymentMethodChange('cash')} />
+                                        <input type="radio" name="paymentMethod" id="cash" checked={paymentMethod === 'COD'} onChange={() => handlePaymentMethodChange('COD')} />
                                     </div>
                                     <div className='flex flex-col items-center space-y-2 px-[40px] lg:px-[30px] md:px-[20px] border-r-[1px] '>
                                         <img src={creditcard} alt="d/c" className='lg:w-[25px] md:w-[20px]' />

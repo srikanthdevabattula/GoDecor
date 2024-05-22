@@ -16,6 +16,8 @@ import Login from "../Pages/Authentication/Login";
 import OrderDetails from "../Pages/Orders/Order";
 import AllOrders from "../Pages/AllOrders/AllOrders";
 import Wishlist from "../Pages/Wishlist/Wishlist";
+import Profile from "../Pages/Profile/Profile";
+import Payment from "../Pages/Payment/Payment";
 
 // export const router = createBrowserRouter([
 // 	{
@@ -78,12 +80,20 @@ const Routers = () => {
 				element={<Services />}
 				/>
 				<Route 
+				path='/profile'
+				element={<Profile />}
+				/>
+				<Route 
 				path='/wishlist'
 				element={<Wishlist />}
 				/>
 				<Route 
 				path='/checkout'
 				element={<Checkout />}
+				/>
+				<Route 
+				path='/payment'
+				element={<Payment />}
 				/>
 				<Route
 				path='/orders'

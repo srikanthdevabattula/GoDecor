@@ -3,3 +3,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.addressfields input{
+    @apply flex flex-wrap border-[1px] m-2 p-1 rounded-[7px] sm:text-[10px] sm:w-[100%]
+}
+.profile input{
+    @apply  text-[14px] border-[2px] rounded-[10px] w-[400px] sm:w-[200px] h-[40px] px-2
+}
+
+.modal-content div input{
+    @apply text-[14px] border-[2px] p-1 rounded-[10px] w-[400px] h-[40px]
+}
+.modal-content div {
+ @apply flex items-center
+}
+.modal-content div label{
+    @apply w-[80px]
+}
