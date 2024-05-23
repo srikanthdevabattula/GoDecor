@@ -1,14 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { cartSelector, selectPaymentSelector, totalSelector } from '../../../redux/reducers/productReducer';
-import { Link } from 'react-router-dom';
+import { cartSelector, selectPaymentSelector, selectedAddressSelector, totalSelector } from '../../../redux/reducers/productReducer';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import Loader from '../../../Loader/Loader';
 
-const OrderSummery = () => {
+const OrderSummary = () => {
   const token = Cookies.get('token');
-  
-  function loadScript(src) {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const selectedAddress = useSelector(selectedAddressSelector);
+  const paymentMethod = useSelector(selectPaymentSelector);
+  const [cartItems, setCartItems] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
+  const fetchCartItems = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('https://go-decor.vercel.app/api/v1/cart', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      setCartItems(data.data[0].cart);
+      setTotal(data.data[0].totalPrice);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadScript = (src) => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = src;
@@ -20,46 +49,39 @@ const OrderSummery = () => {
       };
       document.body.appendChild(script);
     });
-  }
+  };
 
-  async function displayRazorpay() {
+  const displayRazorpay = async () => {
+    setLoading(true);
     const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
     if (!res) {
       alert("Razorpay SDK failed to load. Are you online?");
+      setLoading(false);
       return;
     }
 
     const headers = { 'Authorization': `Bearer ${token}` };
 
     try {
-      const result = await axios.post("https://go-decor.vercel.app/api/v1/order/new",
-      {
-            paymentMethod: "COD"
-          }
-          , { headers });
-        
+      const result = await axios.post("https://go-decor.vercel.app/api/v1/order/new", { addressId: selectedAddress._id }, { headers });
 
       if (!result) {
         alert("Server error. Are you online?");
+        setLoading(false);
         return;
       }
 
-      console.log({ response: result.data });
-
       const { orderInfo, razorPayment } = result.data.data;
 
-      console.log({ orderInfo, razorPayment });
-
       const options = {
-        key: "rzp_test_YxowEUIK2xZcQi", // Enter the Key ID generated from the Dashboard
-        amount: orderInfo?.totalPrice * 100, // Converting amount to paisa
+        key: "rzp_test_YxowEUIK2xZcQi",
+        amount: orderInfo?.totalPrice * 100,
         currency: "INR",
         name: "Soumya Corp.",
         description: "Test Transaction",
         order_id: razorPayment?.razorpayOrderId,
-        handler: async function (response) {
-          console.log({ response });
+        handler: async (response) => {
           const data = {
             dbOrderID: orderInfo.orderId,
             razorpay_payment_id: response.razorpay_payment_id,
@@ -68,22 +90,14 @@ const OrderSummery = () => {
           };
 
           const result = await axios.post("https://go-decor.vercel.app/api/v1/order/verify", data, { headers });
-        //   const result = (await axios.post("http://localhost:4000/api/v1/order/new",
-        //   {
-        //     paymentMethod: "COD"
-        //   }
-        //   , { headers }))
-    
-          console.log({ result });
 
-          alert(result.data.msg);
+          alert(result.data.message);
+          navigate('/orders');
         },
         prefill: {
           name: "Soumya",
           email: "SoumyaDey@example.com",
           contact: "9999999999",
-          cvv:123
-          
         },
         notes: {
           address: "Soumya Dey Corporate Office",
@@ -97,56 +111,37 @@ const OrderSummery = () => {
       paymentObject.open();
     } catch (error) {
       console.error('Error creating order:', error);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  async function placeOrder() {
-   
-
+  const placeOrder = async () => {
+    setLoading(true);
     const headers = { 'Authorization': `Bearer ${token}` };
 
     try {
-      const result = await axios.post("https://go-decor.vercel.app/api/v1/order/new", {}, { headers });
+      const result = await axios.post("https://go-decor.vercel.app/api/v1/order/new", { addressId: selectedAddress._id }, { headers });
 
       if (!result) {
         alert("Server error. Are you online?");
+        setLoading(false);
         return;
       }
 
-      console.log({ response: result.data });
-alert({response:result.data.message})
-      const { orderInfo } = result.data.data;
+      await axios.post("https://go-decor.vercel.app/api/v1/order/verify", { paymentMethod: 'COD' }, { headers });
 
-      console.log({ orderInfo });
-    }catch (error) {
-        console.error('Error creating order:', error);
-      }
-}
-
-  const [cartItems, setCartItems] = useState([]);
-  const [total, setTotal] = useState(0);
-  const paymentMethod = useSelector(selectPaymentSelector);
-  
- 
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
-
-  const fetchCartItems = async () => {
-    try {
-      const response = await fetch('https://go-decor.vercel.app/api/v1/cart', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
-
-      setCartItems(data.data[0].cart);
-      setTotal(data.data[0].totalPrice);
+      navigate('/orders');
     } catch (error) {
-      console.error('Error fetching cart items:', error);
+      console.error('Error creating order:', error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className='border-[1px] rounded-[4px]'>
@@ -165,38 +160,30 @@ alert({response:result.data.message})
       <div className='space-y-3 p-4'>
         <div className='flex justify-between'>
           <h3 className='text-[#5F6C72] text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>Sub-total</h3>
-          <h2 className='text-[#191C1F] font-medium text-[14px]  lg:text-[13px] md:text-[12px] sm:text-[10px]'>₹{total}</h2>
+          <h2 className='text-[#191C1F] font-medium text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>₹{total}</h2>
         </div>
         <div className='flex justify-between'>
           <h3 className='text-[#5F6C72] text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>Shipping</h3>
-          <h2 className='text-[#191C1F] font-medium text-[14px]  lg:text-[13px] md:text-[12px] sm:text-[10px]'>{total > 0 ? 'Free' : 0}</h2>
+          <h2 className='text-[#191C1F] font-medium text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>{total > 0 ? 'Free' : 0}</h2>
         </div>
         <div className='flex justify-between'>
           <h3 className='text-[#5F6C72] text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>Discount</h3>
-          <h2 className='text-[#191C1F] font-medium text-[14px]  lg:text-[13px] md:text-[12px] sm:text-[10px]'>₹
-          {/* {total > 0 ? Math.round(total / 100 * 15) : 0} */}
-          0
-          </h2>
+          <h2 className='text-[#191C1F] font-medium text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>₹0</h2>
         </div>
         <div className='flex justify-between'>
           <h3 className='text-[#5F6C72] text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>Tax</h3>
-          <h2 className='text-[#191C1F] font-medium text-[14px]  lg:text-[13px] md:text-[12px] sm:text-[10px]'>₹
-          {/* {Math.round(total / 100 * 5)} */}0
-          </h2>
+          <h2 className='text-[#191C1F] font-medium text-[14px] lg:text-[13px] md:text-[12px] sm:text-[10px]'>₹0</h2>
         </div>
       </div>
       <div className='p-4'>
         <div className='flex justify-between border-t-[1px] pt-2 my-2'>
           <h1 className='text-[16px] lg:text-[15px] md:text-[14px] sm:text-[12px] text-[#191C1F]'>Total</h1>
-          <h3 className='text-[#191C1F] font-semibold text-[16px] lg:text-[15px] md:text-[14px] sm:text-[12px]'>₹
-          {/* {(Math.round(total / 100 * 5)) + total - (total > 0 ? Math.round(total / 100 * 15) : 0)}
-           */}
-          {total} INR</h3>
+          <h3 className='text-[#191C1F] font-semibold text-[16px] lg:text-[15px] md:text-[14px] sm:text-[12px]'>₹{total} INR</h3>
         </div>
-        <button onClick={paymentMethod=='card' ? displayRazorpay:placeOrder} className='bg-[#FA8232] text-[white] p-[15px] text-center w-[100%] font-bold text-[16px]  lg:text-[13px] md:text-[14px] sm:text-[12px] rounded-[4px]'>PLACE ORDER →</button>
+        <button onClick={paymentMethod === 'card' ? displayRazorpay : placeOrder} className='bg-[#FA8232] text-white p-[15px] text-center w-[100%] font-bold text-[16px] lg:text-[13px] md:text-[14px] sm:text-[12px] rounded-[4px]'>PLACE ORDER →</button>
       </div>
     </div>
   );
 };
 
-export default OrderSummery;
+export default OrderSummary;

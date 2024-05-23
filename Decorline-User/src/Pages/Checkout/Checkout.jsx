@@ -143,7 +143,7 @@ const Checkout = () => {
                             {paymentMethod === 'card' && (
                                 <div className='p-4 text-[#191C1F] font-Jost space-y-3 cardDetails'>
                                     {/* Card details input fields */}
-                                    <div className='space-y-2'>
+                                    {/* <div className='space-y-2'>
                                         <h4 className='text-[14px] '>Name on Card</h4>
                                         <input type="text" name="" id="" className='w-[100%] px-2 outline-none border-[1px] rounded-[4px] h-[40px]' />
                                     </div>
@@ -160,7 +160,7 @@ const Checkout = () => {
                                             <h4 className='text-[14px] '>CVV</h4>
                                             <input type="text" name="" id="" className='w-[100%] px-2 outline-none border-[1px] rounded-[4px] h-[40px]' />
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             )}
 

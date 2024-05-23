@@ -44,6 +44,7 @@ const Address = () => {
   };
 
   const handleAddressSelect = (address) => {
+    console.log(address)
     dispatch(actions.selectedAddress(address));
     setShowAddresses(false);
   };
