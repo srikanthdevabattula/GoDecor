@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { totalSelector } from '../../../redux/reducers/productReducer'
-import { Link } from 'react-router-dom'
+import { selectedAddressSelector, totalSelector } from '../../../redux/reducers/productReducer'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 const CartTotal = ({total}) => {
+    const history = useNavigate();
 
-
+const selectedAddress=useSelector(selectedAddressSelector)
+   const handleCheckout= () => {
    
+        if(selectedAddress && total>0){
+            history('/checkout');
+        } else{
+            alert('select address or check Cart Items')
+        }
+       
+  
+
+ 
+   
+   }
   return (
     <div className='space-y-3'>
         <div className='border-[1px] p-6 lg:p-4 rounded-[8px] font-Roboto'>
@@ -34,7 +47,7 @@ const CartTotal = ({total}) => {
             <div>
                 <div className='flex justify-between border-t-[1px] pt-2 my-2'><h1 className='text-[16px] lg:text-[15px] md:text-[14px] sm:text-[12px] text-[#191C1F]'>Total</h1>
                 <h3 className='text-[#191C1F] font-semibold text-[16px] lg:text-[15px] md:text-[14px] sm:text-[12px]'>₹{(Math.round(total/100 * 5)) + total -(total>0 ? Math.round(total/100 * 15) : 0) } INR</h3></div>
-              <Link to='/checkout'>  <button className='bg-[#F4F0EC] p-[15px] text-center w-[100%] font-bold text-[16px]  lg:text-[13px] md:text-[14px] sm:text-[12px] rounded-[4px]'>PROCEED TO CHECKOUT →</button></Link>
+             <button onClick={handleCheckout} className='bg-[#F4F0EC] p-[15px] text-center w-[100%] font-bold text-[16px]  lg:text-[13px] md:text-[14px] sm:text-[12px] rounded-[4px]'>PROCEED TO CHECKOUT →</button>
             </div>
         </div>
 
