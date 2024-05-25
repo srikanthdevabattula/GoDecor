@@ -87,6 +87,7 @@ const OrderSummary = () => {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: razorPayment?.razorpayOrderId,
             razorpay_signature: response.razorpay_signature,
+           
           };
 
           const result = await axios.post("https://go-decor.vercel.app/api/v1/order/verify", data, { headers });
@@ -116,29 +117,48 @@ const OrderSummary = () => {
     }
   };
 
+
+
+
+
+
+
+
+
+  
+
+
+
+
   const placeOrder = async () => {
     setLoading(true);
     const headers = { 'Authorization': `Bearer ${token}` };
-
+  
     try {
       const result = await axios.post("https://go-decor.vercel.app/api/v1/order/new",
        { addressId: selectedAddress._id }, { headers });
-
+  
       if (!result) {
         alert("Server error. Are you online?");
         setLoading(false);
         return;
       }
-
-    //   await axios.post("https://go-decor.vercel.app/api/v1/order/verify", { paymentMethod: 'COD' }, { headers });
-
+      const { orderInfo } = result.data.data;
+  
+      await axios.post("https://go-decor.vercel.app/api/v1/order/verify", { 
+        paymentMethod: 'COD',
+        dbOrderID: orderInfo.orderId
+      }, { headers });
+  
       navigate('/orders');
     } catch (error) {
       console.error('Error creating order:', error);
+      alert('Error creating order. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   if (loading) {
     return <Loader />;
