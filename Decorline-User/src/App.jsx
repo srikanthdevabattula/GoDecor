@@ -4,6 +4,7 @@ import Routers from "./routes";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./redux/store";
 import { fetchAllProducts } from "./redux/reducers/productReducer";
+import Loader from "./Loader/Loader";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -30,7 +31,7 @@ function App() {
 
   // Render loading indicator while fetching data
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader/>;
   }
 
   // Render the app content once data is fetched

@@ -99,10 +99,8 @@ const Routers = () => {
 				path='/orders'
 				element={<AllOrders />}
 				/>
-				<Route 
-				path='/orderDetails'
-				element={<OrderDetails />}
-				/>
+				  <Route path='/orderDetails/:orderId/:itemId' element={<OrderDetails />} />
+       
 				<Route 
 				path='/bookConsultation'
 				element={<BookConsultation />}
