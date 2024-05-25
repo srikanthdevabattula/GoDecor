@@ -16,6 +16,7 @@ const initialState={
     error:null,
     isDataFetched: false, 
     selectedAddress:null,
+    allOrders:[],
     paymentType:'COD'
 }
 
@@ -109,6 +110,9 @@ const productSlice= createSlice({
           },
           selectPayment:(state,action)=>{
             state.paymentType=action.payload;
+          },
+          setAllOrders:(state,action)=>{
+            state.allOrders=action.payload;
           }
 
     },
@@ -149,3 +153,4 @@ export const selectProductsError = state => state.productsReducer.error;
 
 export const selectedAddressSelector=state=>state.productsReducer.selectedAddress;
 export const selectPaymentSelector=state=>state.productsReducer.paymentType
+export const setAllOrdersSelector=state=>state.productsReducer.allOrders;

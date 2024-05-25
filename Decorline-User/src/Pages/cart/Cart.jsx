@@ -7,6 +7,7 @@ import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion';
 const Cart = () => {
     const [total, setTotal] = useState(0);
+    const [cartItems, setCartItems] = useState([]);
 	const transition = { duration: 2, type: 'spring' };
 	const { ref, inView } = useInView({
 		triggerOnce: true, // Only trigger animation once
@@ -29,10 +30,10 @@ const Cart = () => {
 <div className='px-[10%]  sm:px-[5%] flex md:flex-col space-x-3 md:space-x-0 md:space-y-3'>
     <div className='l w-[70%] md:w-[100%] space-y-[30px]'>
 <Address/>
-<CartItems setTotal={setTotal}/>
+<CartItems setTotal={setTotal} cartItems={cartItems} setCartItems={setCartItems}/>
     </div>
     <div className='r w-[30%] md:w-[100%]'>
-        <CartTotal total={total}/>
+        <CartTotal total={total} cartItems={cartItems}/>
     </div>
 </div>
 </motion.div>

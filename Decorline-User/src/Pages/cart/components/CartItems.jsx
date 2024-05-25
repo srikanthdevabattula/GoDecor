@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { CiCircleRemove } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Loader from '../../../Loader/Loader';
 
-const CartItems = ({ setTotal }) => {
-  const [cartItems, setCartItems] = useState([]);
+const CartItems = ({ setTotal,setCartItems,cartItems }) => {
+  
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const CartItems = ({ setTotal }) => {
     }
   };
 
-  const dispatch = useDispatch();
+
 
   const handleIncrement = async (productId) => {
     setLoading(true);
@@ -49,22 +48,14 @@ const CartItems = ({ setTotal }) => {
       if (response.ok) {
         const responseData = await response.json();
         console.log('Product quantity increased successfully:', responseData);
+
+        const updatedCartItems = cartItems.map(item =>
+          item.productId._id === productId ? { ...item, quantity: item.quantity + 1 } : item
+        );
+        setCartItems(updatedCartItems);
+        fetchCartItems();
       } else {
         console.error('Failed to increase product quantity:', response.statusText);
-      }
-
-      const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (cartResponse.ok) {
-        const cartData = await cartResponse.json();
-        console.log('Updated cart:', cartData.data[0].cart);
-        setCartItems(cartData.data[0].cart);
-      } else {
-        console.error('Failed to fetch cart:', cartResponse.statusText);
       }
     } catch (error) {
       console.error('Error increasing product quantity:', error.message);
@@ -88,22 +79,14 @@ const CartItems = ({ setTotal }) => {
       if (response.ok) {
         const responseData = await response.json();
         console.log('Product quantity decreased successfully:', responseData);
+
+        const updatedCartItems = cartItems.map(item =>
+          item.productId._id === productId ? { ...item, quantity: item.quantity - 1 } : item
+        ).filter(item => item.quantity > 0); // Remove item if quantity is 0
+        setCartItems(updatedCartItems);
+        fetchCartItems();
       } else {
         console.error('Failed to decrease product quantity:', response.statusText);
-      }
-
-      const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (cartResponse.ok) {
-        const cartData = await cartResponse.json();
-        console.log('Updated cart:', cartData.data[0].cart);
-        setCartItems(cartData.data[0].cart);
-      } else {
-        console.error('Failed to fetch cart:', cartResponse.statusText);
       }
     } catch (error) {
       console.error('Error decreasing product quantity:', error.message);
@@ -127,22 +110,12 @@ const CartItems = ({ setTotal }) => {
       if (response.ok) {
         const responseData = await response.json();
         console.log('Product removed from cart successfully:', responseData);
+
+        const updatedCartItems = cartItems.filter(item => item.productId._id !== productId);
+        setCartItems(updatedCartItems);
+        fetchCartItems();
       } else {
         console.error('Failed to remove product from cart:', response.statusText);
-      }
-
-      const cartResponse = await fetch('https://go-decor.vercel.app/api/v1/cart', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (cartResponse.ok) {
-        const cartData = await cartResponse.json();
-        console.log('Updated cart:', cartData.data[0].cart);
-        setCartItems(cartData.data[0].cart);
-      } else {
-        console.error('Failed to fetch cart:', cartResponse.statusText);
       }
     } catch (error) {
       console.error('Error removing product from cart:', error.message);

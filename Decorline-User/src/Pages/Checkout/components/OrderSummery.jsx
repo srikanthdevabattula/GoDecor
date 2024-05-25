@@ -121,7 +121,8 @@ const OrderSummary = () => {
     const headers = { 'Authorization': `Bearer ${token}` };
 
     try {
-      const result = await axios.post("https://go-decor.vercel.app/api/v1/order/new", { addressId: selectedAddress._id }, { headers });
+      const result = await axios.post("https://go-decor.vercel.app/api/v1/order/new",
+       { addressId: selectedAddress._id }, { headers });
 
       if (!result) {
         alert("Server error. Are you online?");
@@ -129,7 +130,7 @@ const OrderSummary = () => {
         return;
       }
 
-      await axios.post("https://go-decor.vercel.app/api/v1/order/verify", { paymentMethod: 'COD' }, { headers });
+    //   await axios.post("https://go-decor.vercel.app/api/v1/order/verify", { paymentMethod: 'COD' }, { headers });
 
       navigate('/orders');
     } catch (error) {

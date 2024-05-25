@@ -9,6 +9,7 @@ import { IoHeartSharp } from "react-icons/io5";
 import { IoHeartOutline } from "react-icons/io5";
 import arrow from '../../assets/products/arrow.png';
 import Cookies from 'js-cookie';
+import Loader from '../../Loader/Loader';
 const ProductDetails = () => {
    
     const { _id } = useParams();
@@ -18,6 +19,7 @@ const ProductDetails = () => {
     const [cart,setCart] =useState([])
     const [productcategory, setProductCategory] = useState(null);
 const [wishlist,setWishlist]=useState(false)
+ const [loading, setLoading] = useState(false);
 
     
     useEffect(() => {
@@ -69,8 +71,8 @@ const [wishlist,setWishlist]=useState(false)
         };
 
         fetchData(); // Call the function
-    }, [_id]);
-    
+    }, [_id,product]);
+   
 
     if (!product) {
         return <div>Product not found</div>;
@@ -125,6 +127,7 @@ const [wishlist,setWishlist]=useState(false)
 
 
     const handleAddToCart = async (productId) => {
+        setLoading(true);
         try {
             const token = Cookies.get('token');
             const response = await fetch('https://go-decor.vercel.app/api/v1/cart/new', {
@@ -140,6 +143,7 @@ const [wishlist,setWishlist]=useState(false)
             if (response.ok) {
                 const responseData = await response.json();
                 console.log('Product added to cart successfully:', responseData);
+
                 // Perform any necessary actions after successful addition to cart
             } else {
                 console.error('Failed to add product to cart:', response.statusText);
@@ -165,11 +169,18 @@ const [wishlist,setWishlist]=useState(false)
         } catch (error) {
             console.error('Error adding product to cart:', error.message);
             // Handle network error
-        }
+        }finally {
+                setLoading(false);
+            }
     };
     
       
       const handleIncrement=async (productId) => {
+        if (quantityInCart <= 0) {
+            alert('Add the item to the cart first.');
+            return;
+        }
+        setLoading(true);
         try {
             const token = Cookies.get('token');
             const response = await fetch(`https://go-decor.vercel.app/api/v1/cart/${productId}/increaseProductQuantity`, {
@@ -209,9 +220,16 @@ const [wishlist,setWishlist]=useState(false)
         } catch (error) {
             console.error('Error adding product to cart:', error.message);
             // Handle network error
+        }finally {
+            setLoading(false);
         }
     };
       const handleDecrement=async (productId) => {
+        if (quantityInCart <= 0) {
+            alert('Add the item to the cart first.');
+            return;
+        }
+        setLoading(true);
         try {
             const token = Cookies.get('token');
             const response = await fetch(`https://go-decor.vercel.app/api/v1/cart/${productId}/decreaseProductQuantity`, {
@@ -251,6 +269,8 @@ const [wishlist,setWishlist]=useState(false)
         } catch (error) {
             console.error('Error adding product to cart:', error.message);
             // Handle network error
+        }finally {
+            setLoading(false);
         }
     };
     const handleWishlist = async (productId) => {
@@ -328,8 +348,8 @@ const [wishlist,setWishlist]=useState(false)
             // Handle network error
         }
       };
-    
-  
+     
+      
       const quantityInCart = cart.find(item => item.productId._id === product._id)?.quantity || 0;
 console.log(quantityInCart)
     return (
@@ -356,7 +376,7 @@ console.log(quantityInCart)
                             <p className='text-[#AAAAAA] font-Jost text-[12px]'>93 Reviews ⮞</p>
                         </div>
                         <p className='text-[32px] lg:text-[27px] md:text-[23px] font-DMSerif'>₹ {price}</p>
-                        <div className='flex gap-5 sm:gap-3 items-center'>
+                       {loading==true?<Loader/>: <div className='flex gap-5 sm:gap-3 items-center'>
                            {quantityInCart>=1?  <button className='bg-[#bb3f24] rounded-[15px] p-[14px_60px] lg:p-[12px_40px] md:p-[10px_20px] sm:p-[7px_10px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleRemoveFromCart(product._id)}>REMOVE FROM CART</button>
                           : <button className='bg-[#023020] rounded-[15px] p-[14px_90px] lg:p-[12px_60px] md:p-[10px_40px] sm:p-[7px_30px] text-[#FFFFFF] font-poppins font-semibold text-[14px] lg:text-[12px] sm:text-[10px]' onClick={()=>handleAddToCart(product._id)}>ADD TO CART</button>
                             }
@@ -365,7 +385,7 @@ console.log(quantityInCart)
                                 <p className='text-[24px] lg:text-[21px] sm:text-[16px] font-DMSerif text-[#121212]'>{quantityInCart}</p>
                                 <button className='border-[#000000] border-[1px] p-[7px_15px] lg:p-[6px_13px] md:p-[4px_9px] sm:p-[0px_5px] font-extrabold text-[20px] rounded-[10px] ' onClick={()=>handleIncrement(product._id)}>+</button>
                             </div>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

@@ -7,12 +7,36 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import PastOrders from './components/PastOrders';
 import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { setAllOrdersSelector } from '../../redux/reducers/productReducer';
+
 const OrderDetails = () => {
+    const { orderId, itemId } = useParams();
+const allOrders=useSelector(setAllOrdersSelector)
     const transition = { duration: 2, type: 'spring' };
 	const { ref, inView } = useInView({
 		triggerOnce: true, // Only trigger animation once
 		threshold: 0.5, // Trigger animation when element is 50% in view
 	});
+
+    const order = allOrders.find(order => order._id === orderId);
+    if (!order) {
+      console.error('Order not found');
+      return <div>Order not found</div>;
+    }
+  
+    // Find the specific item by itemId
+    const item = order.cart.find(item => item._id === itemId);
+    if (!item) {
+      console.error('Item not found');
+      return <div>Item not found</div>;
+    }
+  
+    // Log order and item details to the console
+    console.log('Order:', order);
+    console.log('Item:', item);
+  
 	return (
 
 		   <div ref={ref} className=' m-[2%] '>
@@ -29,9 +53,9 @@ const OrderDetails = () => {
 
 
 <div className='flex md:flex-col px-[5%] gap-6 lg:gap-3'>
-    <div className='flex flex-col items-center gap-2 w-[20%] md:w-[100%]'><img src={orders} alt="" className='lg:w-[120px]'/>
-    <h4 className='text-[#272728] font-poppins text-[20px] lg:text-[14px]'>Jan Sflanaganvik sofa</h4>
-    <p className='text-[#6E6E70] text-[20px] font-poppins lg:text-[14px]'>2’ - 4’ | Brown |Wood-oak</p>
+    <div className='flex flex-col items-center gap-2 w-[20%] md:w-[100%]'><img src={item.productId.images[0]} alt="" className='w-[120px] h-[120px] sm:w-[80px] sm:h-[80px]'/>
+    <h4 className='text-[#272728] font-poppins text-[20px] lg:text-[14px]'>{item.productId.name}</h4>
+    <p className='text-[#6E6E70] text-[20px] font-poppins lg:text-[14px]'>{item.productId.dimension.length} * {item.productId.dimension.height} * {item.productId.dimension.breath} (L*H*B) | {item.productId.category}</p>
     </div>
 
     <div className='border-[1px] rounded-[15px] p-4 font-poppins w-[25%] md:w-[100%]'>
@@ -50,7 +74,7 @@ const OrderDetails = () => {
                 <p className='text-[#575758] text-[13px] lg:text-[12px] md:text-[10px]'>Dec 27, 09:25</p>
             </div>
             <div>
-                <h1 className='text-[16px] lg:text-[15px] md:text-[13px] text-[#272728]'>YYour order left the distribution center</h1>
+                <h1 className='text-[16px] lg:text-[15px] md:text-[13px] text-[#272728]'>Your order left the distribution center</h1>
                 <p className='text-[#575758] text-[13px] lg:text-[12px] md:text-[10px]'>Dec 26, 04:47</p>
             </div>
 
@@ -61,18 +85,18 @@ const OrderDetails = () => {
             <h1 className='text-[#1C1C1C] text-[16px] '>Bill Detail</h1>
             <div className='space-y-2'>
                 <div className='flex justify-between text-[14px]'>
-                    <h4 className='text-[#1C1C1C] ' >Price(2 item)</h4>
-                    <p className='text-[#6E6E70] '>Rs. 6998</p>
+                    <h4 className='text-[#1C1C1C] ' >Price({item.quantity} item)</h4>
+                    <p className='text-[#6E6E70] '>Rs. {item.totalItemPrice}</p>
                 </div>
 
                 <div className='flex justify-between text-[14px]'>
                     <h4 className='text-[#1C1C1C] ' >Tax (X%)</h4>
-                    <p className='text-[#6E6E70] '>Rs. 900</p>
+                    <p className='text-[#6E6E70] '>Rs. 0</p>
                 </div>
 
                 <div className='flex justify-between text-[14px]'>
                     <h4 className='text-[#1C1C1C] ' >Discount</h4>
-                    <p className='text-[#6E6E70] '>Rs. 98</p>
+                    <p className='text-[#6E6E70] '>Rs. 0</p>
                 </div>
 
                 <div className='flex justify-between text-[14px]'>
@@ -82,7 +106,7 @@ const OrderDetails = () => {
 
                 <div className='flex justify-between text-[14px]'>
                     <h4 className='text-[#1C1C1C] ' >Total</h4>
-                    <p className='text-[#6E6E70] '>Rs. 6000</p>
+                    <p className='text-[#6E6E70] '>Rs. {item.totalItemPrice}</p>
                 </div>
             </div>
 
@@ -95,11 +119,11 @@ const OrderDetails = () => {
             <h1 className='text-[16px] lg:text-[14px] text-[#272728]'>Shipping info</h1>
             <div>
                 <p className='text-[#6E6E70] text-[14px] md:text-[12px]'>Delivery Address</p>
-                <h4 className='text-[#272728] text-[14px] lg:text-[12px]'>Kolkata hridaypur 700129</h4>
+                <h4 className='text-[#272728] text-[14px] lg:text-[12px]'>{order.deliveryInfo.address} {order.deliveryInfo.city} {order.deliveryInfo.country} {order.deliveryInfo.state} {order.deliveryInfo.zipCode} <br /> {order.deliveryInfo.email} <br /> {order.deliveryInfo.contactNumber}</h4>
             </div>
             <div>
                 <p className='text-[#6E6E70] text-[14px] md:text-[12px]'>Receives</p>
-                <h4 className='text-[#272728] text-[14px] lg:text-[12px]'>Ava Johnson</h4>
+                <h4 className='text-[#272728] text-[14px] lg:text-[12px]'> {order.deliveryInfo.name}</h4>
             </div>
             <div>
                 <p className='text-[#6E6E70] text-[14px] md:text-[12px]'>Tracking ID</p>
