@@ -16,7 +16,7 @@ const AllOrders = () => {
   const orders=useSelector(setAllOrdersSelector)
   const [loading, setLoading] = useState(false);
   const history = useNavigate();
-
+  const token = Cookies.get('token');
   const transition = { duration: 2, type: 'spring' };
   const { ref, inView } = useInView({
     triggerOnce: true, // Only trigger animation once
@@ -24,13 +24,18 @@ const AllOrders = () => {
   });
 
   useEffect(() => {
-    fetchOrders();
+    if(token){
+      fetchOrders();
+    }else{
+      history('/login')
+    }
+    
   }, []);
 
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const token = Cookies.get('token');
+      
       const response = await fetch('https://go-decor.vercel.app/api/v1/orders', {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -70,7 +75,7 @@ const AllOrders = () => {
           </div>
         </div>
         <div className='border-[1px] rounded-[15px] p-2 m-5 font-poppins'>
-          {reversedOrders.map((order, orderIndex) => (
+          {orders&&reversedOrders.map((order, orderIndex) => (
             <div key={orderIndex}>
               {order.cart.map((item, itemIndex) => (
                 <div key={itemIndex} className='flex items-center justify-between p-2' onClick={() => handleItemClick(order._id, item._id)}>
